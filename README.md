@@ -65,7 +65,6 @@ Format :
 
 ## Structure du projet
 
-#### text
 chat-and-check/
 │
 ├── index.html
@@ -143,19 +142,16 @@ Affichage du score et des recommandations.
 
 Cloner le projet :
 
-#### bash
-git clone <url-du-repository>
+git clone https://github.com/tintin0013/Chat-and-Check
 
 
 Se placer dans le dossier :
 
-#### bash
 cd chat-and-check
 
 
 Ouvrir :
 
-#### bash
 index.html
 
 
