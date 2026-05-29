@@ -19,19 +19,17 @@ Le kit prend la forme d'un mini-site interactif proposant plusieurs mises en sit
 
 Projet réalisé dans le cadre du Y-Days 2026 d'YNOV.
 
-Thème :
+### Thème
 
 > Concevoir un kit de sensibilisation à l'IA pour le monde professionnel.
 
-Durée maximale du parcours :
+### Contraintes
 
-- 10 minutes
-
-Format :
-
-- 100 % digital
+- Durée maximale : 10 minutes
+- Format 100 % digital
 - Utilisable à distance
 - Utilisation individuelle ou collective
+- Compatible avec une diffusion en entreprise
 
 ---
 
@@ -42,7 +40,32 @@ Format :
 - identifier les principaux risques liés à l'utilisation de l'IA générative ;
 - reconnaître les situations impliquant des données sensibles ;
 - appliquer les bonnes pratiques de sécurité numérique ;
-- utiliser l'IA de manière responsable dans un contexte professionnel.
+- utiliser l'IA de manière responsable dans un contexte professionnel ;
+- développer un esprit critique face aux contenus générés par l'IA.
+
+---
+
+## Public cible
+
+### Secteur d'activité
+
+- Ressources Humaines
+- Administration
+
+### Profils visés
+
+- Assistants administratifs
+- Assistants RH
+- Gestionnaires administratifs
+
+### Niveau de maturité IA
+
+Débutant à intermédiaire.
+
+Le kit s'adresse aussi bien :
+
+- aux utilisateurs réguliers d'outils d'IA générative ;
+- aux collaborateurs encore réticents à l'utilisation de l'IA.
 
 ---
 
@@ -54,17 +77,25 @@ Format :
 - CSS3
 - JavaScript
 
-### Outils
+### Outils de conception
 
 - Figma
-- GitHub
-- GitHub Pages
 - Notion
+
+### Gestion de projet
+
+- Git
+- GitHub
+
+### Hébergement
+
+- GitHub Pages
 
 ---
 
 ## Structure du projet
 
+```text
 chat-and-check/
 │
 ├── index.html
@@ -83,31 +114,60 @@ chat-and-check/
 ├── .gitignore
 │
 └── README.md
-
+```
 
 ---
 
 ## Fonctionnement du parcours
 
-### Phase 1 : Introduction
+### Phase 1 : Introduction et immersion
 
-Présentation du contexte professionnel.
+Le participant incarne un assistant administratif ou RH confronté à plusieurs demandes professionnelles.
 
-### Phase 2 : Scénarios interactifs
+Objectifs :
 
-Analyse de situations inspirées du quotidien RH et administratif.
+- comprendre le contexte ;
+- découvrir sa mission ;
+- prendre connaissance du fonctionnement du kit.
 
-### Phase 3 : Sensibilisation
+---
 
-Explication des risques et des bonnes pratiques.
+### Phase 2 : Prise de décision interactive
+
+Le participant interagit avec plusieurs scénarios réalistes.
+
+Il doit identifier les comportements à risque liés :
+
+- au partage de données sensibles ;
+- à l'utilisation de données confidentielles dans une IA ;
+- à la confiance excessive dans les réponses générées ;
+- à l'absence de vérification des informations.
+
+---
+
+### Phase 3 : Conséquences et sensibilisation
+
+Chaque décision donne lieu à :
+
+- une explication pédagogique ;
+- une analyse des risques ;
+- une présentation des bonnes pratiques.
+
+---
 
 ### Phase 4 : Quiz final
 
-Validation des connaissances.
+Le participant valide les connaissances acquises à travers un quiz rapide.
+
+---
 
 ### Phase 5 : Résultat
 
-Affichage du score et des recommandations.
+Affichage :
+
+- du score final ;
+- du profil utilisateur ;
+- des recommandations à retenir.
 
 ---
 
@@ -138,31 +198,161 @@ Affichage du score et des recommandations.
 
 ---
 
+## Répartition des responsabilités
+
+### Product Management
+
+**Rahnia Soilihi**
+
+- Pilotage du projet
+- Définition de la cible
+- Coordination de l’équipe
+- Gestion des priorités
+- Suivi de l’avancement
+- Validation des livrables
+
+### UX/UI Design
+
+**Angie Li Arias**
+
+- Recherche utilisateur
+- Conception du parcours utilisateur
+- Wireframes
+- Maquettes Figma
+- Validation de l’expérience utilisateur
+- Collaboration avec l’équipe de développement
+
+### Développement Web
+
+**Soukina Nounou**
+
+- Intégration HTML
+- Mise en place du responsive design
+- Développement front-end
+- Intégration des maquettes UX/UI
+
+**Arnaud Pinatel**
+
+- Développement JavaScript
+- Gestion des scénarios interactifs
+- Gestion du système de score
+- Navigation entre les différentes étapes
+- Déploiement GitHub Pages
+- Maintenance technique du projet
+
+### Direction Artistique & Motion Design
+
+**Pierre Samson**
+
+- Conception de l’identité visuelle
+- Création de la vidéo commerciale
+- Motion design
+- Direction artistique globale
+
+**Maelys Louis-Rose**
+
+- Création de la charte graphique
+- Conception des éléments visuels
+- Cohérence graphique du projet
+- Support à la production vidéo
+
+### Communication & Brand Strategy
+
+**Maggi Bastidas**
+
+- Stratégie de communication
+- Plan de diffusion interne
+- Adaptation aux canaux de communication de l’entreprise cible
+- Calendrier éditorial
+
+**Salwa Echeikhe**
+
+- Positionnement du projet
+- Rédaction des contenus
+- Ton éditorial
+- Supports de communication interne
+
+---
+
+## Livrables
+
+### 1. Fiche de cadrage
+
+Document présentant :
+
+- la cible
+- le format du kit
+- l’angle éditorial
+- le parcours utilisateur
+- la répartition des rôles
+
+### 2. Kit de sensibilisation
+
+Mini-site interactif permettant aux utilisateurs de découvrir les bonnes pratiques liées à l’utilisation de l’intelligence artificielle en entreprise.
+
+### 3. Vidéo commerciale
+
+Vidéo de présentation du projet d’une durée maximale de 3 minutes destinée à promouvoir le kit auprès d’un futur client.
+
+---
+
+## Scénarios abordés
+
+Le kit s’appuie sur plusieurs situations professionnelles inspirées du quotidien des services RH et administratifs :
+
+- gestion de données personnelles ;
+- utilisation d’outils d’IA générative ;
+- vérification des informations produites par une IA ;
+- partage de documents confidentiels ;
+- bonnes pratiques de cybersécurité.
+
+---
+
+## Valeurs du projet
+
+Le projet repose sur quatre principes fondamentaux :
+
+- Sécurité des données
+- Esprit critique
+- Responsabilité numérique
+- Utilisation raisonnée de l’intelligence artificielle
+
+### Message principal
+
+> L’IA est un assistant, pas un remplaçant.
+
+---
+
 ## Déploiement local
 
 Cloner le projet :
 
-git clone https://github.com/tintin0013/Chat-and-Check
+```bash
+git clone https://github.com/tintin0013/Chat-and-Check.git
+```
 
+Accéder au dossier :
 
-Se placer dans le dossier :
-
-cd chat-and-check
-
+```bash
+cd Chat-and-Check
+```
 
 Ouvrir :
 
+```bash
 index.html
-
+```
 
 ---
 
 ## Déploiement GitHub Pages
 
-Le projet sera publié via GitHub Pages afin d'être accessible en ligne pour la démonstration finale.
+Le projet est destiné à être publié via GitHub Pages afin d'être accessible en ligne pour les démonstrations et la restitution finale.
 
 ---
 
 ## Licence
 
-Projet pédagogique réalisé dans le cadre du Y-Days 2026.
+Projet pédagogique réalisé dans le cadre du Y-Days 2026 d'YNOV.
+
+Aucune exploitation commerciale n'est prévue.
