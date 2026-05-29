@@ -1,5 +1,9 @@
 # Chat & Check : les bons réflexes IA
 
+## Démonstration en ligne
+
+🔗 https://tintin0013.github.io/Chat-and-Check/
+
 ## Présentation
 
 Chat & Check est un kit de sensibilisation à l'intelligence artificielle destiné aux salariés des services Ressources Humaines et Administration.
