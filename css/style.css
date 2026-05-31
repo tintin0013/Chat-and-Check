@@ -125,3 +125,67 @@ body {
 .answer-button:hover {
     background-color: #f3f2f1;
 }
+
+.feedback-box {
+    margin-top: 30px;
+
+    padding: 20px;
+
+    border-radius: 8px;
+
+    text-align: center;
+}
+
+.feedback-success {
+    background-color: #dff6dd;
+
+    border: 1px solid #8bc34a;
+}
+
+.feedback-error {
+    background-color: #fde7e9;
+
+    border: 1px solid #e57373;
+}
+
+.feedback-title {
+    font-size: 24px;
+
+    font-weight: 600;
+
+    margin-bottom: 15px;
+}
+
+.feedback-text {
+    margin-bottom: 20px;
+
+    line-height: 1.6;
+}
+
+.feedback-button {
+    background-color: #6264a7;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 6px;
+
+    padding: 12px 24px;
+
+    cursor: pointer;
+}
+
+.feedback-button:hover {
+    background-color: #50539b;
+}
+
+.chatty-video {
+
+    width: 220px;
+
+    display: block;
+
+    margin: 0 auto 20px auto;
+
+}
