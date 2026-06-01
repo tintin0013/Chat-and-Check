@@ -83,10 +83,10 @@ const recapQuizData = [
     },
     {
         id: 3,
-        question: "Peut-on utiliser un document disciplinaire dans une IA publique ?",
+        question: "Peut-on utiliser des données sensibles dans une IA interne sécurisée validée par l’entreprise ?",
         answers: ["Oui", "Non"],
-        correctAnswer: 1,
-        explanation: "Les données disciplinaires sont hautement sensibles."
+        correctAnswer: 0,
+        explanation: "L’utilisation est autorisée lorsque l’outil est interne, conforme aux règles de sécurité et approuvé par l’entreprise."
     },
     {
         id: 4,
@@ -97,9 +97,9 @@ const recapQuizData = [
     },
     {
         id: 5,
-        question: "Faut-il rejeter automatiquement un candidat parce qu'il utilise l'IA ?",
+        question: "Peut-on accepter un candidat qui a utilisé l’IA dans son CV ?",
         answers: ["Oui", "Non"],
-        correctAnswer: 1,
-        explanation: "L'important est de vérifier les informations et de rencontrer le candidat."
+        correctAnswer: 0,
+        explanation: "L’usage de l’IA n’est pas un problème tant que les informations sont vraies. Il faut donc vérifier les compétences et l’identité du candidat lors de l’entretien."
     }
 ];
