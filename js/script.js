@@ -10,6 +10,8 @@ function startExperience() {
 
     let attempts = 0;
 
+    let score = 0;
+
     displayScenario();
 
     function displayScenario() {
@@ -18,6 +20,10 @@ function startExperience() {
 
         app.innerHTML = `
         
+            <div class="score-box">
+                Score : ${score} / ${scenarios.length * 2}
+            </div>
+
             <div class="scenario-screen">
 
                 <h1>Scénario ${scenario.id}</h1>
@@ -61,6 +67,16 @@ function startExperience() {
                 const selectedAnswer = parseInt(button.dataset.answer);
 
                 if (selectedAnswer === scenario.correctAnswer) {
+
+                    if (attempts === 0) {
+
+                        score = score + 2;
+
+                    } else {
+
+                        score = score + 1;
+
+                    }
 
                     app.innerHTML = `
                     
@@ -117,10 +133,18 @@ function startExperience() {
                             
                                 <div class="scenario-screen">
 
-                                    <h1>Félicitations</h1>
+                                    <h1>Parcours terminé</h1>
 
                                     <p>
-                                        Vous avez terminé tous les scénarios.
+                                        Votre score est de :
+                                    </p>
+
+                                    <h2>
+                                        ${score} / ${scenarios.length * 2}
+                                    </h2>
+
+                                    <p>
+                                        ${getResultMessage()}
                                     </p>
 
                                 </div>
@@ -246,10 +270,18 @@ function startExperience() {
                                 
                                     <div class="scenario-screen">
 
-                                        <h1>Félicitations</h1>
+                                        <h1>Parcours terminé</h1>
 
                                         <p>
-                                            Vous avez terminé tous les scénarios.
+                                            Votre score est de :
+                                        </p>
+
+                                        <h2>
+                                            ${score} / ${scenarios.length * 2}
+                                        </h2>
+
+                                        <p>
+                                            ${getResultMessage()}
                                         </p>
 
                                     </div>
@@ -268,6 +300,29 @@ function startExperience() {
 
         });
 
+    }
+
+    function getResultMessage() {
+
+        if (score >= 9) {
+
+            return "Excellent ! Vous maîtrisez les bons réflexes liés à l'IA.";
+
+        }
+
+        if (score >= 7) {
+
+            return "Très bon résultat. Quelques points peuvent encore être améliorés.";
+
+        }
+
+        if (score >= 4) {
+
+            return "Résultat correct, mais certains réflexes doivent être renforcés.";
+
+        }
+
+        return "Une sensibilisation complémentaire est recommandée.";
     }
 
 }

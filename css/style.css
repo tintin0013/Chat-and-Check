@@ -189,3 +189,26 @@ body {
     margin: 0 auto 20px auto;
 
 }
+
+.score-box {
+    position: fixed;
+
+    top: 20px;
+    right: 20px;
+
+    background-color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.08),
+        0 8px 24px rgba(0, 0, 0, 0.08);
+
+    font-weight: 600;
+
+    color: #6264a7;
+
+    z-index: 1000;
+}
