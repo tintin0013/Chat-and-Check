@@ -15,7 +15,7 @@ L'objectif est de sensibiliser les utilisateurs aux risques liés à l'utilisati
 - la confiance excessive dans les réponses générées ;
 - l'absence de vérification des informations.
 
-Le kit prend la forme d'un mini-site interactif proposant plusieurs mises en situation professionnelles, des quiz et des retours pédagogiques.
+Le kit prend la forme d'un mini-site interactif responsive avec une interface immersive, inspirée d'un chatbot professionnel. Il propose plusieurs mises en situation professionnelles à travers des scénarios interactifs, des quiz à choix multiples, des prises de décision et des retours pédagogiques sur les bonnes pratiques liées à l'utilisation de l'IA.
 
 ---
 
@@ -35,16 +35,26 @@ Projet réalisé dans le cadre du Y-Days 2026 d'YNOV.
 - Utilisation individuelle ou collective
 - Compatible avec une diffusion en entreprise
 
+### Durée du parcours
+
+Le kit est conçu pour être réalisé en autonomie en moins de 10 minutes :
+
+- 5 situations interactives d'environ 1 minute chacune ;
+- un mini quiz final d'environ 2 minutes ;
+- une conclusion personnalisée.
+
+La durée totale est comprise entre 8 et 10 minutes.
+
 ---
 
 ## Objectifs pédagogiques
 
 À l'issue du parcours, le participant doit être capable de :
 
-- identifier les principaux risques liés à l'utilisation de l'IA générative ;
+- identifier les principaux risques liés à l'utilisation de l'IA générative en entreprise ;
 - reconnaître les situations impliquant des données sensibles ;
-- appliquer les bonnes pratiques de sécurité numérique ;
-- utiliser l'IA de manière responsable dans un contexte professionnel ;
+- adopter les bonnes pratiques de sécurité numérique ;
+- utiliser l'IA de manière responsable, sécurisée et conforme aux attentes de son entreprise ;
 - développer un esprit critique face aux contenus générés par l'IA.
 
 ---
@@ -69,7 +79,18 @@ Débutant à intermédiaire.
 Le kit s'adresse aussi bien :
 
 - aux utilisateurs réguliers d'outils d'IA générative ;
-- aux collaborateurs encore réticents à l'utilisation de l'IA.
+- aux collaborateurs encore réticents à l'utilisation de l'IA (par méconnaissance de l'IA).
+
+Les salariés utilisent l'IA rapidement pour gagner du temps mais :
+
+- ne vérifient pas les informations ;
+- partagent parfois des données sensibles ;
+- peuvent être trompés par de faux contenus générés par l'IA.
+
+### Outils de communication interne utilisés
+
+- Microsoft Teams
+- Outlook / E-mail
 
 ---
 
@@ -80,20 +101,18 @@ Le kit s'adresse aussi bien :
 - HTML5
 - CSS3
 - JavaScript
+- GitHub Pages (hébergement)
 
 ### Outils de conception
 
-- Figma
-- Notion
+- Figma (UX/UI et prototypage)
+- Notion (gestion de projet et des tâches)
+- Outils IA générative (idées de contenus et tests utilisateurs)
 
 ### Gestion de projet
 
 - Git
 - GitHub
-
-### Hébergement
-
-- GitHub Pages
 
 ---
 
@@ -122,6 +141,20 @@ chat-and-check/
 
 ---
 
+## Angle éditorial
+
+Sensibilisation aux risques liés à l'utilisation de l'intelligence artificielle en entreprise, avec un focus particulier sur la protection des données et le partage d'informations sensibles.
+
+Le kit met en évidence les dangers d'une mauvaise utilisation des outils d'IA générative dans un environnement professionnel, tout en montrant que ces outils peuvent constituer une aide précieuse lorsqu'ils sont utilisés de manière responsable.
+
+L'approche retenue combine :
+
+- les dangers liés à l'IA ;
+- les limites de confiance envers les contenus générés ;
+- les possibilités positives d'une utilisation encadrée et sécurisée.
+
+---
+
 ## Fonctionnement du parcours
 
 ### Phase 1 : Introduction et immersion
@@ -145,7 +178,7 @@ Il doit identifier les comportements à risque liés :
 - au partage de données sensibles ;
 - à l'utilisation de données confidentielles dans une IA ;
 - à la confiance excessive dans les réponses générées ;
-- à l'absence de vérification des informations.
+- à l'absence de vérification des sources.
 
 ---
 
@@ -165,13 +198,17 @@ Le participant valide les connaissances acquises à travers un quiz rapide.
 
 ---
 
-### Phase 5 : Résultat
+### Phase 5 : Conclusion et bonnes pratiques
 
-Affichage :
+Le participant reçoit un score final ainsi qu'un rappel des règles essentielles à retenir.
 
-- du score final ;
-- du profil utilisateur ;
-- des recommandations à retenir.
+Messages clés :
+
+- Vérifier systématiquement les informations générées par l'IA.
+- Ne jamais partager de données sensibles ou confidentielles.
+- Développer un esprit critique face aux contenus générés.
+- Comprendre que l'IA est un outil d'assistance et non un remplaçant de l'humain.
+- Utiliser l'IA de manière responsable et sécurisée.
 
 ---
 
