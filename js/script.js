@@ -129,27 +129,7 @@ function startExperience() {
 
                         } else {
 
-                            app.innerHTML = `
-                            
-                                <div class="scenario-screen">
-
-                                    <h1>Parcours terminé</h1>
-
-                                    <p>
-                                        Votre score est de :
-                                    </p>
-
-                                    <h2>
-                                        ${score} / ${scenarios.length * 2}
-                                    </h2>
-
-                                    <p>
-                                        ${getResultMessage()}
-                                    </p>
-
-                                </div>
-                            
-                            `;
+                            showEndScreen();
 
                         }
 
@@ -266,27 +246,7 @@ function startExperience() {
 
                             } else {
 
-                                app.innerHTML = `
-                                
-                                    <div class="scenario-screen">
-
-                                        <h1>Parcours terminé</h1>
-
-                                        <p>
-                                            Votre score est de :
-                                        </p>
-
-                                        <h2>
-                                            ${score} / ${scenarios.length * 2}
-                                        </h2>
-
-                                        <p>
-                                            ${getResultMessage()}
-                                        </p>
-
-                                    </div>
-                                
-                                `;
+                                showEndScreen();
 
                             }
 
@@ -323,6 +283,157 @@ function startExperience() {
         }
 
         return "Une sensibilisation complémentaire est recommandée.";
+    }
+
+    function showEndScreen() {
+
+        app.innerHTML = `
+
+            <div class="scenario-screen">
+
+                <h1>Parcours terminé</h1>
+
+                <p>
+                    Votre score est de :
+                </p>
+
+                <h2>
+                    ${score} / ${scenarios.length * 2}
+                </h2>
+
+                <p>
+                    ${getResultMessage()}
+                </p>
+
+                <button id="recap-button" class="feedback-button" style="margin-top: 20px;">
+                    Récapitulatif
+                </button>
+
+            </div>
+
+        `;
+
+        document.getElementById("recap-button").addEventListener("click", function () {
+
+            displayRecapQuiz(0);
+
+        });
+
+    }
+
+    function displayRecapQuiz(currentIndex) {
+
+        const question = recapQuizData[currentIndex];
+
+        const isLast = currentIndex === recapQuizData.length - 1;
+
+        app.innerHTML = `
+
+            <div class="scenario-screen">
+
+                <h1>Quiz récapitulatif</h1>
+
+                <p class="recap-subtitle">Bonnes pratiques IA &amp; données sensibles</p>
+
+                <div class="recap-progress">${currentIndex + 1} / ${recapQuizData.length}</div>
+
+                <p class="recap-question">${question.question}</p>
+
+                <div id="recap-answers">
+                    ${question.answers.map(function (answer, index) {
+                        return `<button class="answer-button recap-answer-button" data-index="${index}">${answer}</button>`;
+                    }).join('')}
+                </div>
+
+                <div id="recap-feedback" class="recap-feedback" style="display:none;"></div>
+
+                <button id="recap-next-button" class="feedback-button recap-next-button" style="display:none;">
+                    ${isLast ? 'Terminer' : 'Question suivante'}
+                </button>
+
+            </div>
+
+        `;
+
+        const answerButtons = document.querySelectorAll(".recap-answer-button");
+
+        answerButtons.forEach(function (button) {
+
+            button.addEventListener("click", function () {
+
+                const selectedIndex = parseInt(button.dataset.index);
+
+                const isCorrect = selectedIndex === question.correctAnswer;
+
+                answerButtons.forEach(function (btn) {
+
+                    btn.disabled = true;
+
+                });
+
+                button.classList.add(isCorrect ? "recap-correct" : "recap-incorrect");
+
+                if (!isCorrect) {
+
+                    answerButtons[question.correctAnswer].classList.add("recap-correct");
+
+                }
+
+                const feedback = document.getElementById("recap-feedback");
+
+                feedback.innerHTML = `
+                    <p class="recap-feedback-label ${isCorrect ? 'recap-feedback-correct-label' : 'recap-feedback-incorrect-label'}">
+                        ${isCorrect ? '✓ Bonne réponse' : '✗ Mauvaise réponse'}
+                    </p>
+                    <p>${question.explanation}</p>
+                `;
+
+                feedback.style.display = "block";
+
+                document.getElementById("recap-next-button").style.display = "block";
+
+            });
+
+        });
+
+        document.getElementById("recap-next-button").addEventListener("click", function () {
+
+            if (!isLast) {
+
+                displayRecapQuiz(currentIndex + 1);
+
+            } else {
+
+                app.innerHTML = `
+
+                    <div class="scenario-screen">
+
+                        <h1>Quiz terminé !</h1>
+
+                        <p>Vous avez complété le récapitulatif des bonnes pratiques IA.</p>
+
+                        <br>
+                        <p>Voici les principaux points à retenir :</p>
+                        <ul class="recap-summary-list">
+                            <li>Protéger les données personnelles avant toute utilisation dans une IA.</li>
+                            <li>Vérifier l’identité des demandeurs d’informations sensibles.</li>
+                            <li>Ne jamais partager de données confidentielles dans une IA publique.</li>
+                            <li>Toujours vérifier les réponses générées par IA.</li>
+                            <li>Garder un esprit critique face aux contenus IA (CV, vidéos, messages…).</li>
+                        </ul>
+
+                        <br>
+
+                        <p><strong>N'oubliez pas : l'IA est un assistant, pas un remplaçant.</strong></p>
+
+                    </div>
+
+                `;
+
+            }
+
+        });
+
     }
 
 }

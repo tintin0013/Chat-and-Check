@@ -65,3 +65,41 @@ const scenarios = [
         correctAnswer: 1
     }
 ];
+
+const recapQuizData = [
+    {
+        id: 1,
+        question: "Peut-on envoyer un CV complet contenant des données personnelles dans une IA publique ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 1,
+        explanation: "Les CV doivent être anonymisés avant utilisation."
+    },
+    {
+        id: 2,
+        question: "Un mail semble venir du directeur et demande des données sensibles. Faut-il lui répondre immédiatement ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 1,
+        explanation: "Toujours vérifier l'identité via un autre canal (Exemple Teams)."
+    },
+    {
+        id: 3,
+        question: "Peut-on utiliser un document disciplinaire dans une IA publique ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 1,
+        explanation: "Les données disciplinaires sont hautement sensibles."
+    },
+    {
+        id: 4,
+        question: "Peut-on faire aveuglément confiance à une réponse donnée par une IA ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 1,
+        explanation: "Une réponse IA n'est jamais une preuve. Toujours vérifier dans les sources officielles."
+    },
+    {
+        id: 5,
+        question: "Faut-il rejeter automatiquement un candidat parce qu'il utilise l'IA ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 1,
+        explanation: "L'important est de vérifier les informations et de rencontrer le candidat."
+    }
+];
