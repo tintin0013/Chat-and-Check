@@ -6,13 +6,15 @@ function startExperience() {
 
     const app = document.getElementById("app");
 
-    const scenario = scenarios[0];
+    let currentScenario = 0;
 
     let attempts = 0;
 
     displayScenario();
 
     function displayScenario() {
+
+        const scenario = scenarios[currentScenario];
 
         app.innerHTML = `
         
@@ -87,7 +89,7 @@ function startExperience() {
                                     Les données sensibles doivent être protégées et vérifiées avant toute utilisation dans une IA.
                                 </div>
 
-                                <button class="feedback-button">
+                                <button id="continue-button" class="feedback-button">
                                     Continuer
                                 </button>
 
@@ -96,6 +98,38 @@ function startExperience() {
                         </div>
                     
                     `;
+
+                    const continueButton = document.getElementById("continue-button");
+
+                    continueButton.addEventListener("click", function () {
+
+                        currentScenario++;
+
+                        attempts = 0;
+
+                        if (currentScenario < scenarios.length) {
+
+                            displayScenario();
+
+                        } else {
+
+                            app.innerHTML = `
+                            
+                                <div class="scenario-screen">
+
+                                    <h1>Félicitations</h1>
+
+                                    <p>
+                                        Vous avez terminé tous les scénarios.
+                                    </p>
+
+                                </div>
+                            
+                            `;
+
+                        }
+
+                    });
 
                 } else {
 
@@ -184,7 +218,7 @@ function startExperience() {
                                         <strong>${scenario.answers[scenario.correctAnswer]}</strong>
                                     </div>
 
-                                    <button class="feedback-button">
+                                    <button id="continue-button" class="feedback-button">
                                         Continuer
                                     </button>
 
@@ -193,6 +227,38 @@ function startExperience() {
                             </div>
                         
                         `;
+
+                        const continueButton = document.getElementById("continue-button");
+
+                        continueButton.addEventListener("click", function () {
+
+                            currentScenario++;
+
+                            attempts = 0;
+
+                            if (currentScenario < scenarios.length) {
+
+                                displayScenario();
+
+                            } else {
+
+                                app.innerHTML = `
+                                
+                                    <div class="scenario-screen">
+
+                                        <h1>Félicitations</h1>
+
+                                        <p>
+                                            Vous avez terminé tous les scénarios.
+                                        </p>
+
+                                    </div>
+                                
+                                `;
+
+                            }
+
+                        });
 
                     }
 
