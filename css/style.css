@@ -212,3 +212,92 @@ body {
 
     z-index: 1000;
 }
+
+/* ── Quiz récapitulatif ── */
+
+.recap-subtitle {
+    color: #605e5c;
+    margin-bottom: 10px;
+}
+
+.recap-progress {
+    display: inline-block;
+
+    background-color: #6264a7;
+    color: white;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    padding: 4px 12px;
+
+    border-radius: 20px;
+
+    margin-bottom: 25px;
+}
+
+.recap-question {
+    font-size: 17px;
+    font-weight: 600;
+
+    margin-bottom: 20px;
+
+    line-height: 1.5;
+}
+
+.recap-answer-button:disabled {
+    cursor: default;
+}
+
+.recap-correct {
+    background-color: #dff6dd;
+    border-color: #5cb85c;
+    color: #2d6a2d;
+    font-weight: 600;
+}
+
+.recap-incorrect {
+    background-color: #fde7e9;
+    border-color: #e57373;
+    color: #a02020;
+    font-weight: 600;
+}
+
+.recap-feedback {
+    padding: 15px 20px;
+
+    background-color: #f3f2f1;
+
+    border-left: 4px solid #6264a7;
+
+    border-radius: 6px;
+
+    margin-top: 10px;
+
+    margin-bottom: 10px;
+
+    line-height: 1.6;
+}
+
+.recap-feedback-label {
+    font-weight: 700;
+
+    margin-bottom: 6px;
+}
+
+.recap-feedback-correct-label {
+    color: #2d6a2d;
+}
+
+.recap-feedback-incorrect-label {
+    color: #a02020;
+}
+
+.recap-next-button {
+    margin-top: 10px;
+}
+
+.recap-summary-list {
+    margin: 10px 0 10px 20px;
+    line-height: 2;
+}
