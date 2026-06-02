@@ -212,7 +212,23 @@ function startExperience() {
                                     </div>
 
                                     <div class="feedback-text">
-                                        ${scenario.hint}
+                                       ${scenario.wrongFeedback}
+                                    </div>
+
+                                    <div class="takeaway-box">
+
+                                        <div class="takeaway-title">
+                                            CE QU'IL FAUT RETENIR
+                                        </div>
+
+                                        <div class="takeaway-item">
+                                            ✗ ${scenario.wrongTakeaways[0]}
+                                        </div>
+
+                                        <div class="takeaway-item">
+                                            ✗ ${scenario.wrongTakeaways[1]}
+                                        </div>
+
                                     </div>
 
                                     <div class="feedback-text">

@@ -17,6 +17,11 @@ const scenarios = [
             "Identifier les données personnelles avant d'utiliser une IA.",
             "Vérifier que l'outil IA utilisé est conforme aux règles de l'entreprise."
         ],
+        wrongFeedback: "Les CV contiennent de nombreuses données personnelles. Avant d'utiliser une IA, il faut toujours vérifier quelles informations sont transmises et si elles peuvent être anonymisées.",
+        wrongTakeaways: [
+            "Les CV contiennent des données personnelles à protéger.",
+            "Une IA publique ne doit jamais recevoir des informations nominatives sans précaution.",
+],
     },
     {
         id: 2,
@@ -36,6 +41,11 @@ const scenarios = [
         "Contrôler l'identité d'un demandeur avant de transmettre des informations sensibles.",
         "Rester vigilant face aux demandes urgentes ou inhabituelles."
         ],
+        wrongFeedback: "Une demande urgente n'est pas forcément légitime. Les cyberattaques utilisent souvent l'urgence et l'autorité pour pousser à agir sans vérifier.",
+        wrongTakeaways: [
+            "Toujours vérifier l'identité du demandeur avant de transmettre des données sensibles.",
+            "L'urgence est souvent utilisée pour pousser à agir sans contrôle.",
+],
     },
     {
         id: 3,
@@ -55,6 +65,11 @@ const scenarios = [
             "Classer les informations selon leur niveau de confidentialité.",
             "Limiter le partage des données sensibles aux personnes autorisées."
         ],
+        wrongFeedback: "Les informations disciplinaires font partie des données sensibles. Leur diffusion doit être strictement contrôlée, même lorsqu'un outil semble pratique.",
+        wrongTakeaways: [
+            "Les informations disciplinaires sont des données sensibles.",
+            "Les données confidentielles ne doivent pas être partagées sans autorisation.",
+],
     },
     {
         id: 4,
@@ -74,6 +89,11 @@ const scenarios = [
             "S'appuyer sur des sources officielles pour prendre une décision.",
             "Conserver un regard critique sur les réponses générées par l'IA."
         ],
+        wrongFeedback: "Une réponse générée par IA peut sembler très crédible tout en étant incorrecte. Une vérification auprès d'une source officielle reste indispensable.",
+        wrongTakeaways: [
+            "Une réponse IA doit toujours être vérifiée dans une source officielle.",
+            "Une réponse convaincante n'est pas forcément correcte.",
+],
     },
     {
         id: 5,
@@ -93,6 +113,11 @@ const scenarios = [
             "Vérifier les informations importantes avant de prendre une décision.",
             "Combiner les outils IA avec une validation humaine."
         ],
+        wrongFeedback: "Une candidature très convaincante ne garantit pas que toutes les informations sont exactes. Les contenus générés par IA doivent toujours être vérifiés.",
+        wrongTakeaways: [
+            "Les contenus générés par IA doivent être vérifiés avant toute décision.",
+            "La validation humaine reste indispensable lors d'un recrutement.",
+],
     }
 ];
 
