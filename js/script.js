@@ -102,7 +102,7 @@ function startExperience() {
                                 </div>
 
                                 <div class="feedback-text">
-                                    Les données sensibles doivent être protégées et vérifiées avant toute utilisation dans une IA.
+                                    ${scenario.feedback}
                                 </div>
 
                                 <button id="continue-button" class="feedback-button">
@@ -165,7 +165,10 @@ function startExperience() {
                                     </div>
 
                                     <div class="feedback-text">
-                                        Cette réponse présente un risque pour la sécurité des données.
+                                        ${scenario.hint}
+                                    </div>
+
+                                    <div class="feedback-text">
                                         Vous disposez encore d'une tentative.
                                     </div>
 
@@ -220,6 +223,9 @@ function startExperience() {
                                         La bonne réponse était :
                                         <br><br>
                                         <strong>${scenario.answers[scenario.correctAnswer]}</strong>
+                                    </div>
+                                    <div class="feedback-text">
+                                        ${scenario.feedback}
                                     </div>
 
                                     <button id="continue-button" class="feedback-button">
