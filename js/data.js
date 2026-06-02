@@ -1,66 +1,66 @@
 const scenarios = [
     {
         id: 1,
-        title: "Utilisation d'un CV dans une IA",
+        title: "Le recrutement express",
         role: "Vous êtes assistant RH.",
-        description: "Votre responsable vous demande d'utiliser une IA générative afin de résumer plusieurs CV reçus pour un recrutement.",
+        description: "Votre responsable vous demande d’analyser rapidement plusieurs CV reçus pour un recrutement. Pour gagner du temps, vous envisagez d’utiliser une IA générative afin d’obtenir un résumé des candidatures.",
         question: "Que faites-vous ?",
         answers: [
-            "Copier les CV complets dans ChatGPT",
-            "Anonymiser les CV avant utilisation",
-            "Envoyer directement les CV à une IA publique"
+            "Copier-coller les CV complets dans l’IA",
+            "Anonymiser les CV avant utilisation puis demander un résumé",
+            "Envoyer les CV à une IA publique via votre compte personnel"
         ],
         correctAnswer: 1
     },
     {
         id: 2,
-        title: "Le mail du directeur général",
+        title: "Le mail urgent du directeur",
         role: "Vous êtes assistant administratif.",
-        description: "À 17h45, vous recevez un e-mail semblant provenir du directeur général. Il vous demande de lui transmettre rapidement la liste complète des salariés avec leurs coordonnées afin de préparer une réunion urgente. Le ton du message est inhabituel et l'adresse d'expédition ressemble à celle du directeur mais comporte une légère différence.",
+        description: "À 17h45, vous recevez un mail semblant provenir du directeur général. Il vous demande d’envoyer rapidement la liste complète des salariés avec leurs coordonnées afin de préparer une réunion urgente. L’adresse ressemble à celle du directeur mais contient une légère différence.",
         question: "Que faites-vous ?",
         answers: [
+            "J’envoie immédiatement les informations demandées",
             "Je transfère le mail à plusieurs collègues pour leur demander leur avis",
-            "Je vérifie l'adresse de l'expéditeur et contacte le directeur par un autre moyen avant d'agir",
-            "J'envoie immédiatement les informations demandées pour éviter de retarder la réunion"
+            "Je vérifie l’identité de l’expéditeur via un autre canal avant toute action"
+        ],
+        correctAnswer: 2
+    },
+    {
+        id: 3,
+        title: "Le compte-rendu disciplinaire",
+        role: "Vous êtes assistant RH.",
+        description: "Un manager vous demande de rédiger un compte-rendu à partir d’un document contenant des informations disciplinaires concernant plusieurs salariés. Vous pensez utiliser une IA pour accélérer la rédaction.",
+        question: "Quelle est la meilleure décision ?",
+        answers: [
+            "Utiliser directement le document dans une IA publique",
+            "Anonymiser les informations sensibles avant toute utilisation",
+            "Partager le document avec un collègue qui possède un abonnement IA"
         ],
         correctAnswer: 1
     },
     {
-        id: 3,
-        title: "Le document confidentiel",
-        role: "Vous êtes assistant RH.",
-        description: "Un manager vous transmet un document contenant des informations disciplinaires concernant plusieurs salariés et vous demande de rédiger un compte-rendu à l'aide d'une IA.",
-        question: "Quelle est la meilleure décision ?",
-        answers: [
-            "Anonymiser les informations sensibles avant toute utilisation",
-            "Utiliser directement le document dans une IA publique",
-            "Partager le document avec un collègue pour qu'il utilise son compte IA"
-        ],
-        correctAnswer: 0
-    },
-    {
         id: 4,
-        title: "La politique interne inventée",
-        role: "Vous êtes assistant RH.",
-        description: "Un collaborateur vous demande combien de jours de télétravail sont autorisés par semaine. Vous posez la question à une IA qui vous répond avec assurance : 'Les salariés ont droit à 3 jours de télétravail par semaine selon la politique interne de l'entreprise'. Vous ne connaissez pas la réponse officielle.",
+        title: "La réponse convaincante",
+        role: "Vous êtes assistant administratif.",
+        description: "Un collaborateur vous demande combien de jours de télétravail sont autorisés dans l’entreprise. Vous interrogez une IA qui répond : 'Les salariés ont droit à 3 jours de télétravail par semaine selon la politique interne.' Vous ne connaissez pas la règle officielle.",
         question: "Que faites-vous ?",
         answers: [
-            "Je transmets directement la réponse de l'IA au collaborateur",
-            "Je demande à l'IA de confirmer sa réponse une seconde fois",
-            "Je vérifie la politique interne officielle avant de répondre"
+            "Je transmets directement la réponse",
+            "Je demande à l’IA de confirmer sa réponse",
+            "Je consulte la politique interne officielle avant de répondre"
         ],
         correctAnswer: 2
     },
     {
         id: 5,
-        title: "Le faux candidat parfait",
-        role: "Vous êtes assistant RH.",
-        description: "Lors d'un recrutement, vous recevez un CV exceptionnel accompagné d'une vidéo de présentation très convaincante. Un collègue vous informe que certaines candidatures utilisent désormais des contenus générés par IA et des deepfakes.",
+        title: "Le candidat idéal",
+        role: "Vous participez à un recrutement.",
+        description: "Vous recevez un CV remarquable accompagné d’une vidéo de présentation très professionnelle. Un collègue vous rappelle que certains candidats utilisent désormais des contenus générés par IA ou des deepfakes.",
         question: "Quelle est la meilleure réaction ?",
         answers: [
-            "Écarter automatiquement tous les candidats utilisant l'IA",
-            "Vérifier les informations du candidat et organiser un entretien pour confirmer son identité et ses compétences",
-            "Valider immédiatement la candidature car le profil semble excellent"
+            "Rejeter automatiquement tous les candidats utilisant l’IA",
+            "Vérifier les informations du candidat et organiser un entretien",
+            "Accepter immédiatement la candidature"
         ],
         correctAnswer: 1
     }
