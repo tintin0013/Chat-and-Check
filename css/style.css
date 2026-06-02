@@ -547,11 +547,13 @@ body {
     padding: 20px;
     border-radius: 8px;
     text-align: center;
+    position: relative;
 }
 
 .feedback-success {
     background-color: #dff6dd;
     border: 1px solid #8bc34a;
+    padding-right: 180px;
 }
 
 .feedback-error {
@@ -773,4 +775,36 @@ body {
         width: 100%;
         max-width: 280px;
     }
+}
+
+
+
+
+@keyframes successAnimation {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-5px) rotate(-3deg);
+    }
+    50% {
+        transform: translateY(0px) rotate(3deg);
+    }
+    75% {
+        transform: translateY(-3px) rotate(-2deg);
+    }
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+.chatty-success {
+    width: 120px;
+    height: auto;
+
+    position: absolute;
+    top: 30px;
+    right: 20px;
+
+    animation: successAnimation 2s infinite ease-in-out;
 }

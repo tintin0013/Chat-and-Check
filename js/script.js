@@ -116,18 +116,15 @@ function startExperience() {
 
                             <div class="feedback-box feedback-success">
 
-                                <video
-                                    class="chatty-video"
-                                    autoplay
-                                    muted
-                                    loop
-                                    playsinline
-                                >
-                                    <source
-                                        src="assets/videos/applause.mp4"
-                                        type="video/mp4"
-                                    >
-                                </video>
+                                <img
+
+                                    src="assets/images/Chip_correct.svg"
+
+                                    alt="Bonne réponse"
+
+                                    class="chatty-success"
+
+                                />
 
                                 <div class="feedback-title">
                                     Bonne réponse
