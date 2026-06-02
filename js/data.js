@@ -101,5 +101,5 @@ const recapQuizData = [
         answers: ["Oui", "Non"],
         correctAnswer: 1,
         explanation: "L'important est de vérifier les informations et de rencontrer le candidat."
-    }
+    } 
 ];
