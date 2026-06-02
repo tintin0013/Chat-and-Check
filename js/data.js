@@ -75,3 +75,41 @@ const scenarios = [
         feedback: "Les outils IA peuvent aider les candidats à améliorer leur présentation, mais ils peuvent aussi être utilisés pour tromper les recruteurs. La vérification humaine reste indispensable. L’esprit critique reste votre meilleur outil face aux contenus générés par IA."
     }
 ];
+
+const recapQuizData = [
+    {
+        id: 1,
+        question: "Peut-on envoyer un CV complet contenant des données personnelles dans une IA publique ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 1,
+        explanation: "Les CV doivent être anonymisés avant utilisation."
+    },
+    {
+        id: 2,
+        question: "Un mail semble venir du directeur et demande des données sensibles. Faut-il lui répondre immédiatement ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 1,
+        explanation: "Toujours vérifier l'identité via un autre canal (Exemple Teams)."
+    },
+    {
+        id: 3,
+        question: "Peut-on utiliser des données sensibles dans une IA interne sécurisée validée par l’entreprise ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 0,
+        explanation: "L’utilisation est autorisée lorsque l’outil est interne, conforme aux règles de sécurité et approuvé par l’entreprise."
+    },
+    {
+        id: 4,
+        question: "Peut-on faire aveuglément confiance à une réponse donnée par une IA ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 1,
+        explanation: "Une réponse IA n'est jamais une preuve. Toujours vérifier dans les sources officielles."
+    },
+    {
+        id: 5,
+        question: "Peut-on accepter un candidat qui a utilisé l’IA dans son CV ?",
+        answers: ["Oui", "Non"],
+        correctAnswer: 0,
+        explanation: "L’usage de l’IA n’est pas un problème tant que les informations sont vraies. Il faut donc vérifier les compétences et l’identité du candidat lors de l’entretien."
+    }
+];
