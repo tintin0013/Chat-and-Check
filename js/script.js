@@ -104,6 +104,21 @@ function startExperience() {
                                 <div class="feedback-text">
                                     ${scenario.feedback}
                                 </div>
+                                <div class="takeaway-box">
+
+                                    <div class="takeaway-title">
+                                        A RETENIR POUR LA SUITE
+                                    </div>
+
+                                    <div class="takeaway-item">
+                                        ✓ ${scenario.takeaways[0]}
+                                    </div>
+
+                                    <div class="takeaway-item">
+                                        ✓ ${scenario.takeaways[1]}
+                                    </div>
+
+                                </div>
 
                                 <button id="continue-button" class="feedback-button">
                                     Continuer
@@ -227,6 +242,21 @@ function startExperience() {
                                     <div class="feedback-text">
                                         ${scenario.feedback}
                                     </div>
+                                    <div class="takeaway-box">
+
+                                    <div class="takeaway-title">
+                                        A RETENIR POUR LA SUITE
+                                    </div>
+
+                                    <div class="takeaway-item">
+                                        ✓ ${scenario.takeaways[0]}
+                                    </div>
+
+                                    <div class="takeaway-item">
+                                        ✓ ${scenario.takeaways[1]}
+                                    </div>
+
+                                </div>
 
                                     <button id="continue-button" class="feedback-button">
                                         Continuer

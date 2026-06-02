@@ -12,7 +12,11 @@ const scenarios = [
         ],
         correctAnswer: 1,
         hint: "Réfléchissez aux informations présentes dans un CV. Certaines données peuvent-elles être considérées comme personnelles ou sensibles ?",
-        feedback: "Les CV contiennent des données personnelles (nom, adresse, téléphone, parcours professionnel). Avant toute utilisation dans un outil d’IA, ces informations doivent être anonymisées ou traitées selon les règles internes de l’entreprise. Les données personnelles ne doivent jamais être partagées sans précaution."
+        feedback: "Les CV contiennent des données personnelles (nom, adresse, téléphone, parcours professionnel). Avant toute utilisation dans un outil d’IA, ces informations doivent être anonymisées ou traitées selon les règles internes de l’entreprise. Les données personnelles ne doivent jamais être partagées sans précaution.",
+        takeaways: [
+            "Identifier les données personnelles avant d'utiliser une IA.",
+            "Vérifier que l'outil IA utilisé est conforme aux règles de l'entreprise."
+        ],
     },
     {
         id: 2,
@@ -27,7 +31,11 @@ const scenarios = [
         ],
         correctAnswer: 2,
         hint: "L'urgence d'une demande ne garantit pas son authenticité. Comment pourriez-vous vérifier l'identité de l'expéditeur ?",
-        feedback: "Les outils IA permettent aujourd’hui de créer des messages extrêmement crédibles. Avant de transmettre des données sensibles, il faut toujours vérifier l’identité du demandeur. Ne faites jamais confiance à un message uniquement parce qu’il semble authentique."
+        feedback: "Les outils IA permettent aujourd’hui de créer des messages extrêmement crédibles. Avant de transmettre des données sensibles, il faut toujours vérifier l’identité du demandeur. Ne faites jamais confiance à un message uniquement parce qu’il semble authentique.",
+        takeaways: [
+        "Contrôler l'identité d'un demandeur avant de transmettre des informations sensibles.",
+        "Rester vigilant face aux demandes urgentes ou inhabituelles."
+        ],
     },
     {
         id: 3,
@@ -42,7 +50,11 @@ const scenarios = [
         ],
         correctAnswer: 1,
         hint: "Réfléchissez à la nature des informations contenues dans ce document. Peuvent-elles être diffusées sans précaution ?",
-        feedback: "Les informations disciplinaires font partie des données particulièrement sensibles. Elles ne doivent pas être transmises à des outils externes sans précautions. L’IA n’est pas un espace de stockage sécurisé pour les données confidentielles."
+        feedback: "Les informations disciplinaires font partie des données particulièrement sensibles. Elles ne doivent pas être transmises à des outils externes sans précautions. L’IA n’est pas un espace de stockage sécurisé pour les données confidentielles.",
+        takeaways: [
+            "Classer les informations selon leur niveau de confidentialité.",
+            "Limiter le partage des données sensibles aux personnes autorisées."
+        ],
     },
     {
         id: 4,
@@ -57,7 +69,11 @@ const scenarios = [
         ],
         correctAnswer: 2,
         hint: "Une réponse formulée avec assurance est-elle forcément exacte ? Quelle source pourrait confirmer l'information ?",
-        feedback: "L’IA peut produire une réponse convaincante mais incorrecte. Même lorsqu’elle paraît certaine d’elle, ses informations doivent être vérifiées. Une réponse IA n’est pas une preuve."
+        feedback: "L’IA peut produire une réponse convaincante mais incorrecte. Même lorsqu’elle paraît certaine d’elle, ses informations doivent être vérifiées. Une réponse IA n’est pas une preuve.",
+        takeaways: [
+            "S'appuyer sur des sources officielles pour prendre une décision.",
+            "Conserver un regard critique sur les réponses générées par l'IA."
+        ],
     },
     {
         id: 5,
@@ -72,7 +88,11 @@ const scenarios = [
         ],
         correctAnswer: 1,
         hint: "Une présentation très convaincante garantit-elle que les informations sont exactes ? Quelle étape permettrait de le vérifier ?",
-        feedback: "Les outils IA peuvent aider les candidats à améliorer leur présentation, mais ils peuvent aussi être utilisés pour tromper les recruteurs. La vérification humaine reste indispensable. L’esprit critique reste votre meilleur outil face aux contenus générés par IA."
+        feedback: "Les outils IA peuvent aider les candidats à améliorer leur présentation, mais ils peuvent aussi être utilisés pour tromper les recruteurs. La vérification humaine reste indispensable. L’esprit critique reste votre meilleur outil face aux contenus générés par IA.",
+        takeaways: [
+            "Vérifier les informations importantes avant de prendre une décision.",
+            "Combiner les outils IA avec une validation humaine."
+        ],
     }
 ];
 
