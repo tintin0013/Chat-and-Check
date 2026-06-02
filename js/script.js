@@ -26,21 +26,53 @@ function startExperience() {
 
             <div class="scenario-screen">
 
-                <h1>Scénario ${scenario.id}</h1>
+                <div class="scenario-progress">
 
-                <h2>${scenario.title}</h2>
+                    <div class="progress-step active"></div>
 
-                <p>
+                    <div class="progress-line"></div>
+
+                    <div class="progress-step current">1</div>
+
+                    <div class="progress-line"></div>
+
+                    <div class="progress-step">2</div>
+
+                    <div class="progress-line"></div>
+
+                    <div class="progress-step">3</div>
+
+                    <div class="progress-line"></div>
+
+                    <div class="progress-step">4</div>
+
+                    <div class="progress-line"></div>
+
+                    <div class="progress-step">5</div>
+
+                </div>
+
+                <div class="scenario-badge">
+
+                    ● Scénario 0${scenario.id}/0${scenarios.length} - ${scenario.title}
+
+                </div>
+
+                <div class="scenario-context">
+
+                    <strong>Contexte :</strong>
+
                     ${scenario.role}
-                </p>
 
-                <p>
                     ${scenario.description}
-                </p>
 
-                <p>
+                </div>
+
+                <div class="scenario-question">
+
                     ${scenario.question}
-                </p>
+
+                </div>
 
                 <button class="answer-button" data-answer="0">
                     ${scenario.answers[0]}
