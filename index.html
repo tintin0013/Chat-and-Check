@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat & Check</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -15,17 +18,49 @@
 
         <div class="home-screen">
 
-            <h1>Chat & Check</h1>
+            <header class="home-header">
+                <span class="brand-name">Chat &amp; Check</span>
+                <div class="header-right">
+                    <span class="kit-label">Kit Sensibilisation de l'IA</span>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Basculer le thème">
+                        <span class="toggle-knob">
+                            <img src="soleil.png" alt="" class="theme-icon theme-icon-light">
+                            <img src="lune.png" alt="" class="theme-icon theme-icon-dark">
+                        </span>
+                    </button>
+                </div>
+            </header>
 
-            <h2>Les bons réflexes IA</h2>
+            <main class="hero">
 
-            <p>
-                Sensibilisation à l'utilisation responsable de l'intelligence artificielle en entreprise.
-            </p>
+                <div class="role-tag">Vous incarnez un(e) assistant(e) RH</div>
+                <div class="robot-wrapper">
+                    <img class="hero-robot" src="petitrobot.png" alt="Illustration d'une personne utilisant un ordinateur avec des éléments d'IA autour">
+                </div>
 
-            <button id="start-button">
-                Commencer
-            </button>
+                <div class="hero-title">
+                    <p>L'IA vous aide.</p>
+                    <p><span class="accent">Êtes vous prêt(e)</span> à l'utiliser<br>correctement&nbsp;?</p>
+                </div>
+
+                <p class="hero-desc">
+                    Un parcours de 8 à 10 minutes pour maîtriser les bons réflexes<br>
+                    face aux outils d'IA générative en entreprise.
+                </p>
+
+                <p class="hero-question">Utilisez-vous déjà l'IA au travail ?</p>
+
+                <div class="home-answer-buttons">
+                    <button class="home-answer-btn">Parfois</button>
+                    <button class="home-answer-btn">Oui, régulièrement</button>
+                    <button class="home-answer-btn">Non, jamais</button>
+                </div>
+
+                <button class="home-cta" id="start-button">
+                    Je commence <span class="cta-arrow">→</span>
+                </button>
+
+            </main>
 
         </div>
 
@@ -33,6 +68,24 @@
 
     <script src="js/data.js"></script>
     <script src="js/script.js"></script>
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        themeToggle.addEventListener('click', function () {
+            const isLight = html.getAttribute('data-theme') === 'light';
+            html.setAttribute('data-theme', isLight ? 'dark' : 'light');
+        });
+
+        document.querySelectorAll('.home-answer-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.home-answer-btn').forEach(function (b) {
+                    b.classList.remove('selected');
+                });
+                btn.classList.add('selected');
+            });
+        });
+    </script>
 
 </body>
 
