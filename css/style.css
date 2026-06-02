@@ -44,6 +44,25 @@ body {
     transition: color 0.3s ease;
 }
 
+body::before {
+    content: "";
+    position: fixed;
+    left: -180px;
+    top: 180px;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(138, 56, 245, 0.40) 0%,
+        rgba(138, 56, 245, 0.22) 35%,
+        rgba(138, 56, 245, 0.10) 60%,
+        transparent 85%
+    );
+    pointer-events: none;
+    z-index: -1;
+}
+
 [data-theme="dark"] body {
     background: radial-gradient(circle at top, #1f1638 0%, #050509 55%, #020208 100%);
 }
