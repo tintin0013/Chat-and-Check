@@ -78,14 +78,17 @@ function startExperience() {
                             <!-- Cercle représentant un scénario -->
                             <div class="progress-step
                                 ${scenarioStatus[index] === "success" ? "validated" : ""}
+                                ${scenarioStatus[index] === "warning" ? "warning" : ""}
                                 ${scenarioStatus[index] === "failed" ? "failed" : ""}
                                 ${index === currentScenario ? "current" : ""}">
 
                                 ${
                                   scenarioStatus[index] === "success"
                                     ? "✓"
-                                    : scenarioStatus[index] === "failed"
-                                      ? "✗"
+                                    : scenarioStatus[index] === "warning"
+                                        ? "!"
+                                        : scenarioStatus[index] === "failed"
+                                            ? "✗"
                                       : index === scenarios.length
                                         ? "Q"
                                         : index + 1
@@ -188,14 +191,17 @@ function startExperience() {
 
                     <div class="progress-step
                         ${scenarioStatus[index] === "success" ? "validated" : ""}
+                        ${scenarioStatus[index] === "warning" ? "warning" : ""}
                         ${scenarioStatus[index] === "failed" ? "failed" : ""}
                         ${index === currentScenario ? "current" : ""}">
 
                         ${
                           scenarioStatus[index] === "success"
                             ? "✓"
-                            : scenarioStatus[index] === "failed"
-                              ? "✗"
+                            : scenarioStatus[index] === "warning"
+                                ? "!"
+                                : scenarioStatus[index] === "failed"
+                                    ? "✗"
                               : index === scenarios.length
                                 ? "Q"
                                 : index + 1
@@ -279,7 +285,11 @@ function startExperience() {
           // Lorsque l'utilisateur clique sur Continuer
           continueButton.addEventListener("click", function () {
             // Le scénario est validé
-            scenarioStatus[currentScenario] = "success";
+            if (attempts === 0) {
+                scenarioStatus[currentScenario] = "success";
+            } else {
+                scenarioStatus[currentScenario] = "warning";
+            }
 
             // Passage au scénario suivant
             currentScenario++;
@@ -304,7 +314,7 @@ function startExperience() {
           attempts++;
 
           // Le scénario est temporairement marqué en échec
-          scenarioStatus[currentScenario] = "failed";
+          scenarioStatus[currentScenario] = "warning";
 
           // ========================================
           // PREMIÈRE ERREUR
@@ -314,67 +324,155 @@ function startExperience() {
             // AFFICHAGE DE L'ÉCRAN DE PREMIÈRE ERREUR
             // ========================================
             mainContent.innerHTML = `
-                        
-                            <div class="scenario-screen">
 
-                                <div class="feedback-box feedback-error">
+    <div class="scenario-screen">
 
-                                    <!-- Animation de réflexion -->
-                                    <video
-                                        class="chatty-video"
-                                        autoplay
-                                        muted
-                                        loop
-                                        playsinline
-                                    >
-                                        <source
-                                            src="assets/videos/reflection.mp4"
-                                            type="video/mp4"
-                                        >
-                                    </video>
+        <!-- Barre de progression -->
 
-                                    <!-- Titre -->
-                                    <div class="feedback-title">
-                                        Attention
-                                    </div>
+        <div class="scenario-progress">
 
-                                    <!-- Explication de l'erreur -->
-                                    <div class="feedback-text">
-                                       ${scenario.wrongFeedback}
-                                    </div>
+            <div class="progress-step start-step active">
 
-                                    <!-- Points importants à retenir -->
-                                    <div class="takeaway-box">
+                ✓
 
-                                        <div class="takeaway-title">
-                                            CE QU'IL FAUT RETENIR
-                                        </div>
+            </div>
 
-                                        <div class="takeaway-item">
-                                            ✗ ${scenario.wrongTakeaways[0]}
-                                        </div>
+            <div class="progress-line completed"></div>
 
-                                        <div class="takeaway-item">
-                                            ✗ ${scenario.wrongTakeaways[1]}
-                                        </div>
+            ${Array.from({ length: scenarios.length + 1 }, function (_, index) {
 
-                                    </div>
+              return `
 
-                                    <!-- Message indiquant qu'il reste une tentative -->
-                                    <div class="feedback-text">
-                                        Vous disposez encore d'une tentative.
-                                    </div>
+                    ${
 
-                                    <!-- Bouton permettant de rejouer le scénario -->
-                                    <button id="retry-button" class="feedback-button">
-                                        Réessayer
-                                    </button>
+                      index > 0
 
-                                </div>
+                        ? `<div class="progress-line ${index <= currentScenario ? "completed" : ""}"></div>`
 
-                            </div>
-                        
-                        `;
+                        : ""
+
+                    }
+
+                    <div class="progress-step
+
+                        ${scenarioStatus[index] === "success" ? "validated" : ""}
+                        ${scenarioStatus[index] === "warning" ? "warning" : ""}
+                        ${scenarioStatus[index] === "failed" ? "failed" : ""}
+
+                        ${index === currentScenario ? "current" : ""}">
+
+                        ${
+
+                          scenarioStatus[index] === "success"
+                            ? "✓"
+                           : scenarioStatus[index] === "warning"
+                            ? "!"
+                            : scenarioStatus[index] === "failed"
+                                ? "✗"
+                              : index === scenarios.length
+                                ? "Q"
+                                : index + 1
+
+                        }
+
+                    </div>
+
+                `;
+
+            }).join("")}
+
+        </div>
+
+        <!-- Badge scénario -->
+
+        <div class="scenario-badge">
+
+            ● Scénario 0${scenario.id}/0${scenarios.length} - ${scenario.title}
+
+        </div>
+
+        <!-- Réponse choisie -->
+
+        <div class="selected-answer-box">
+
+            <div class="selected-answer-label">
+
+                Vous avez choisi :
+
+            </div>
+
+            <div class="selected-answer-text selected-answer-text-error">
+
+                ${String.fromCharCode(65 + selectedAnswer)} - ${scenario.answers[selectedAnswer]}
+
+            </div>
+
+        </div>
+
+        <!-- Bloc erreur -->
+
+        <div class="feedback-box feedback-error">
+
+            <div class="feedback-title">
+
+                Attention
+
+            </div>
+
+            <div class="feedback-text">
+
+                ${scenario.wrongFeedback}
+
+            </div>
+
+        </div>
+
+        <!-- Mascotte erreur -->
+
+        <img
+
+            src="assets/images/Chip_question.svg"
+
+            alt="Question"
+
+            class="chatty-first-error"
+
+        />
+
+        <!-- Points à retenir -->
+
+        <div class="takeaway-box takeaway-box-error">
+
+            <div class="takeaway-title">
+
+                CE QU'IL FAUT RETENIR
+
+            </div>
+
+            <div class="takeaway-item">
+
+                ✗ ${scenario.wrongTakeaways[0]}
+
+            </div>
+
+            <div class="takeaway-item">
+
+                ✗ ${scenario.wrongTakeaways[1]}
+
+            </div>
+
+        </div>
+
+
+        <button id="retry-button" class="feedback-button">
+
+            Réessayer - 1 tentative restante ↻
+
+        </button>
+
+    </div>
+
+    `;
 
             // Récupération du bouton Réessayer
             const retryButton = document.getElementById("retry-button");
@@ -390,74 +488,163 @@ function startExperience() {
             // L'utilisateur a utilisé ses deux tentatives
             // ========================================
             mainContent.innerHTML = `
-                        
-                            <div class="scenario-screen">
 
-                                <div class="feedback-box feedback-error">
+<div class="scenario-screen">
 
-                                    <!-- Animation d'échec -->
-                                    <video
-                                        class="chatty-video"
-                                        autoplay
-                                        muted
-                                        loop
-                                        playsinline
-                                    >
-                                        <source
-                                            src="assets/videos/error.mp4"
-                                            type="video/mp4"
-                                        >
-                                    </video>
+    <!-- Barre de progression -->
 
-                                    <!-- Titre -->
-                                    <div class="feedback-title">
-                                        Mauvaise réponse
-                                    </div>
+    <div class="scenario-progress">
 
-                                    <!-- Message indiquant que toutes les tentatives ont été utilisées -->
-                                    <div class="feedback-text">
-                                        Vous avez utilisé vos deux tentatives.
-                                    </div>
+        <div class="progress-step start-step active">
 
-                                    <!-- Affichage de la bonne réponse -->
-                                    <div class="feedback-text">
-                                        La bonne réponse était :
-                                        <br><br>
-                                        <strong>${scenario.answers[scenario.correctAnswer]}</strong>
-                                    </div>
+            ✓
 
-                                    <!-- Explication pédagogique -->
-                                    <div class="feedback-text">
-                                        ${scenario.feedback}
-                                    </div>
+        </div>
 
-                                    <!-- Points clés à retenir -->
-                                    <div class="takeaway-box">
+        <div class="progress-line completed"></div>
 
-                                    <div class="takeaway-title">
-                                        A RETENIR POUR LA SUITE
-                                    </div>
+        ${Array.from({ length: scenarios.length + 1 }, function (_, index) {
 
-                                    <div class="takeaway-item">
-                                        ✓ ${scenario.takeaways[0]}
-                                    </div>
+          return `
 
-                                    <div class="takeaway-item">
-                                        ✓ ${scenario.takeaways[1]}
-                                    </div>
+                ${
 
-                                </div>
+                  index > 0
 
-                                    <!-- Bouton permettant de passer au scénario suivant -->
-                                    <button id="continue-button" class="feedback-button">
-                                        Continuer
-                                    </button>
+                    ? `<div class="progress-line ${index <= currentScenario ? "completed" : ""}"></div>`
 
-                                </div>
+                    : ""
 
-                            </div>
-                        
-                        `;
+                }
+
+                <div class="progress-step
+
+                    ${scenarioStatus[index] === "success" ? "validated" : ""}
+                    ${scenarioStatus[index] === "warning" ? "warning" : ""}
+                    ${scenarioStatus[index] === "failed" ? "failed" : ""}
+
+                    ${index === currentScenario ? "current" : ""}">
+
+                    ${
+
+                      scenarioStatus[index] === "success"
+                        ? "✓"
+                        : scenarioStatus[index] === "warning"
+                          ? "!"
+                          : scenarioStatus[index] === "failed"
+                            ? "✗"
+                            : index === scenarios.length
+                              ? "Q"
+                              : index + 1
+
+                    }
+
+                </div>
+
+            `;
+
+        }).join("")}
+
+    </div>
+
+    <!-- Badge scénario -->
+
+    <div class="scenario-badge">
+
+        ● Scénario 0${scenario.id}/0${scenarios.length} - ${scenario.title}
+
+    </div>
+
+    <!-- Réponse choisie -->
+
+    <div class="selected-answer-box">
+
+        <div class="selected-answer-label">
+
+            Vous avez choisi :
+
+        </div>
+
+        <div class="selected-answer-text selected-answer-text-error">
+
+            ${String.fromCharCode(65 + selectedAnswer)} - ${scenario.answers[selectedAnswer]}
+
+        </div>
+
+    </div>
+
+    <!-- Bloc erreur -->
+
+    <div class="feedback-box feedback-error">
+
+        <div class="feedback-title">
+
+            Mauvaise réponse
+
+        </div>
+
+        <div class="feedback-text">
+
+            Vous avez utilisé vos deux tentatives.
+            <br><br>
+
+            La bonne réponse était :
+            <br><br>
+
+            <strong>${scenario.answers[scenario.correctAnswer]}</strong>
+            <br><br>
+
+            ${scenario.feedback}
+
+        </div>
+
+    </div>
+
+    <!-- Mascotte erreur -->
+
+    <img
+
+        src="assets/images/Chip_incorrect.svg"
+
+        alt="Erreur"
+
+        class="chatty-success"
+
+    />
+
+    <!-- Points à retenir -->
+
+    <div class="takeaway-box">
+
+        <div class="takeaway-title">
+
+            A RETENIR POUR LA SUITE
+
+        </div>
+
+        <div class="takeaway-item">
+
+            ✓ ${scenario.takeaways[0]}
+
+        </div>
+
+        <div class="takeaway-item">
+
+            ✓ ${scenario.takeaways[1]}
+
+        </div>
+
+    </div>
+
+    <button id="continue-button" class="feedback-button">
+
+        Continuer
+
+    </button>
+
+</div>
+
+`;
 
             // Récupération du bouton Continuer
             const continueButton = document.getElementById("continue-button");

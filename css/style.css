@@ -571,10 +571,22 @@ body {
     color: #00c7b7;
 }
 
+.progress-step.warning {
+    background-color: white;
+    border: 2px solid #D38200;
+    color: #D38200;
+}
+
+.progress-step.failed {
+    background-color: white;
+    border: 2px solid #BC2252;
+    color: #BC2252;
+}
+
 .progress-step.current {
-    background-color: transparent;
+    /* background-color: transparent;
     border: 2px solid #00c7b7;
-    color: #00c7b7;
+    color: #00c7b7; */
     font-weight: 700;
 }
 
@@ -645,13 +657,15 @@ body {
     max-width: 800px;
     width: 100%;
     background-color: white;
-    border: none;
+    border: 1px solid #8A38F5;
     border-left: 6px solid #8A38F5;
     padding: 16px 20px;
     text-align: left;
 }
 
 .feedback-error {
+    max-width: 800px;
+    width: 100%;
     background-color: #fde7e9;
     border: 1px solid #e57373;
 }
@@ -1268,6 +1282,10 @@ body {
     width: 1050px;
 }
 
+.takeaway-box-error {
+    margin-top: 40px;
+}
+
 .takeaway-title {
     font-size: 14px;
     font-weight: 700;
@@ -1308,6 +1326,10 @@ body {
 .selected-answer-text {
     color: #0f7b2c;
     font-weight: 600;
+}
+
+.selected-answer-text-error {
+    color: #BC2252;
 }
 
 /* ===========================================
@@ -1454,5 +1476,13 @@ body {
     display: block;
     margin-left: 900px;
     margin-top: -125px;
+    animation: successAnimation 2s infinite ease-in-out;
+}
+.chatty-first-error {
+    width: 120px;
+    height: auto;
+    display: block;
+    margin-left: 900px;
+    margin-top: -200px;
     animation: successAnimation 2s infinite ease-in-out;
 }
