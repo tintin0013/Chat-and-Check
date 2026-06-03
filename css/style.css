@@ -566,21 +566,21 @@ body {
 }
 
 .progress-step.validated {
-    background-color: white;
+    background-color: #00c7b7;
     border: 2px solid #00c7b7;
-    color: #00c7b7;
+    color: white;
 }
 
 .progress-step.warning {
-    background-color: white;
+    background-color: #D38200;
     border: 2px solid #D38200;
-    color: #D38200;
+    color: white;
 }
 
 .progress-step.failed {
-    background-color: white;
+    background-color: #BC2252;
     border: 2px solid #BC2252;
-    color: #BC2252;
+    color: white;
 }
 
 .progress-step.current {
