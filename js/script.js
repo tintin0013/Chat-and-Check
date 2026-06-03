@@ -12,6 +12,8 @@ function startExperience() {
 
     let score = 0;
 
+    let scenarioStatus = Array(scenarios.length).fill("pending");
+
     displayScenario();
 
     function displayScenario() {
@@ -28,27 +30,41 @@ function startExperience() {
 
                 <div class="scenario-progress">
 
-                    <div class="progress-step active"></div>
+                    <div class="progress-step start-step active">
 
-                    <div class="progress-line"></div>
+                        ✓
 
-                    <div class="progress-step current">1</div>
+                    </div>
 
-                    <div class="progress-line"></div>
+                    <div class="progress-line completed"></div>
 
-                    <div class="progress-step">2</div>
+                    ${Array.from({ length: scenarios.length + 1 }, function (_, index) {
 
-                    <div class="progress-line"></div>
+                        return `
+                            ${index > 0
+                                ? `<div class="progress-line ${index <= currentScenario ? 'completed' : ''}"></div>`
+                                : ''
+                            }
 
-                    <div class="progress-step">3</div>
+                            <div class="progress-step
+                                ${scenarioStatus[index] === 'success' ? 'validated' : ''}
+                                ${scenarioStatus[index] === 'failed' ? 'failed' : ''}
+                                ${index === currentScenario ? 'current' : ''}">
 
-                    <div class="progress-line"></div>
+                                ${
+                                    scenarioStatus[index] === 'success'
+                                        ? '✓'
+                                        : scenarioStatus[index] === 'failed'
+                                            ? '✗'
+                                            : index === scenarios.length
+                                                ? 'Q'
+                                                : index + 1
+                                }
 
-                    <div class="progress-step">4</div>
+                            </div>
+                        `;
 
-                    <div class="progress-line"></div>
-
-                    <div class="progress-step">5</div>
+                    }).join('')}
 
                 </div>
 
@@ -163,6 +179,8 @@ function startExperience() {
 
                     continueButton.addEventListener("click", function () {
 
+                        scenarioStatus[currentScenario] = "success";
+
                         currentScenario++;
 
                         attempts = 0;
@@ -182,6 +200,8 @@ function startExperience() {
                 } else {
 
                     attempts++;
+
+                    scenarioStatus[currentScenario] = "failed";
 
                     if (attempts === 1) {
 
@@ -316,6 +336,8 @@ function startExperience() {
                         const continueButton = document.getElementById("continue-button");
 
                         continueButton.addEventListener("click", function () {
+
+                            scenarioStatus[currentScenario] = "failed";
 
                             currentScenario++;
 
