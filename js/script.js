@@ -417,13 +417,15 @@ function startExperience() {
 
         var progressStepsHTML = '';
         for (var i = 0; i < total; i++) {
-            if (i > 0) progressStepsHTML += '<div class="progress-line"></div>';
-            if (i < currentIndex) {
-                progressStepsHTML += '<div class="progress-step active"></div>';
+            if (i > 0) progressStepsHTML += '<div class="recap-progress-line"></div>';
+            if (recapResults[i] === true) {
+                progressStepsHTML += '<div class="recap-progress-step recap-progress-step-correct">✓</div>';
+            } else if (recapResults[i] === false) {
+                progressStepsHTML += '<div class="recap-progress-step recap-progress-step-wrong">✕</div>';
             } else if (i === currentIndex) {
-                progressStepsHTML += '<div class="progress-step current">' + (i + 1) + '</div>';
+                progressStepsHTML += '<div class="recap-progress-step recap-progress-step-current">' + (i + 1) + '</div>';
             } else {
-                progressStepsHTML += '<div class="progress-step">' + (i + 1) + '</div>';
+                progressStepsHTML += '<div class="recap-progress-step">' + (i + 1) + '</div>';
             }
         }
 
@@ -442,7 +444,7 @@ function startExperience() {
         mainContent.innerHTML =
             '<div class="scenario-screen recap-screen">' +
                 '<div class="recap-top-bar">' +
-                    '<div class="scenario-progress recap-prog-bar">' + progressStepsHTML + '</div>' +
+                    '<div class="recap-progress">' + progressStepsHTML + '</div>' +
                     '<button class="recap-quiz-final-badge">Quiz final</button>' +
                 '</div>' +
                 '<div class="recap-status-row">' +
@@ -495,6 +497,12 @@ function startExperience() {
                 var allBars = document.querySelectorAll('.recap-mini-bar');
                 if (allBars[currentIndex]) {
                     allBars[currentIndex].style.background = isCorrect ? '#07B29A' : '#BC2252';
+                }
+                var allProgressSteps = document.querySelectorAll('.recap-progress-step');
+                if (allProgressSteps[currentIndex]) {
+                    allProgressSteps[currentIndex].classList.remove('recap-progress-step-current');
+                    allProgressSteps[currentIndex].classList.add(isCorrect ? 'recap-progress-step-correct' : 'recap-progress-step-wrong');
+                    allProgressSteps[currentIndex].textContent = isCorrect ? '✓' : '✕';
                 }
                 var cNow = recapResults.filter(function(r) { return r === true; }).length;
                 var wNow = recapResults.filter(function(r) { return r === false; }).length;
