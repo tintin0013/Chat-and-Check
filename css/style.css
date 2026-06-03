@@ -629,10 +629,6 @@ body {
     color: #ffffff;
 }
 
-/* .feedback-button:hover {
-    background-color: #50539b;
-} */
-
 .chatty-video {
     width: 220px;
     display: block;
@@ -666,14 +662,52 @@ body {
     justify-content: space-between;
     gap: 16px;
     margin-bottom: 16px;
-    /* Ò */
 }
 
-.recap-prog-bar {
+.recap-progress {
+    display: flex;
+    align-items: center;
     flex: 0 1 720px;
     width: min(720px, 100%);
     max-width: 720px;
-    margin-bottom: 0 !important;
+}
+
+.recap-progress-line {
+    flex: 1;
+    height: 2px;
+    background-color: #2F2CDC;
+}
+
+.recap-progress-step {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #8B8B8C;
+    background-color: white;
+    color: #5a5a5a;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+}
+
+.recap-progress-step-correct {
+    background-color: rgba(7, 178, 154, 0.12);
+    border-color: #07B29A;
+    color: #07B29A;
+}
+
+.recap-progress-step-wrong {
+    background-color: rgba(222, 105, 107, 0.12);
+    border-color: #DE696B;
+    color: #DE696B;
+}
+
+.recap-progress-step-current {
+    border: 2px solid #2F2CDC;
+    color: #2F2CDC;
 }
 
 .recap-quiz-final-badge {
@@ -751,6 +785,7 @@ body {
     height: auto;
     flex-shrink: 0;
     align-self: flex-start;
+    margin-right: 300px;
 }
 
 .recap-answer-layout {
