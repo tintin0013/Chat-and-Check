@@ -1,26 +1,51 @@
+// ========================================
+// BOUTON DE DÉMARRAGE
+// ========================================
+
+// Récupération du bouton "Je commence"
 const startButton = document.getElementById("start-button");
 
+// Lorsque l'utilisateur clique sur le bouton,
+// on démarre l'expérience
 startButton.addEventListener("click", startExperience);
 
+// ========================================
+// FONCTION PRINCIPALE DU PARCOURS
+// ========================================
 function startExperience() {
+  // Zone principale dans laquelle tous les écrans
+  // du parcours seront affichés
+  const mainContent = document.getElementById("main-content");
 
-    const mainContent = document.getElementById("main-content");
+  // Index du scénario actuellement affiché
+  let currentScenario = 0;
 
-    let currentScenario = 0;
+  // Nombre de tentatives effectuées sur le scénario courant
+  let attempts = 0;
 
-    let attempts = 0;
+  // Score global du joueur
+  let score = 0;
 
-    let score = 0;
+  // Tableau permettant de suivre l'état de chaque scénario
+  // pending = non joué
+  // success = réussi
+  // failed = raté
+  let scenarioStatus = Array(scenarios.length).fill("pending");
 
     let recapResults = [];
 
     displayScenario();
 
-    function displayScenario() {
 
-        const scenario = scenarios[currentScenario];
+  // ========================================
+  // AFFICHAGE D'UN SCÉNARIO
+  // ========================================
+  function displayScenario() {
+    // Récupération du scénario en cours
+    const scenario = scenarios[currentScenario];
 
-        mainContent.innerHTML = `
+    // Construction complète de l'écran du scénario
+    mainContent.innerHTML = `
         
             <div class="score-box">
                 Score : ${score} / ${scenarios.length * 2}
@@ -28,38 +53,59 @@ function startExperience() {
 
             <div class="scenario-screen">
 
+                <!-- Barre de progression -->
                 <div class="scenario-progress">
 
-                    <div class="progress-step active"></div>
+                    <!-- Point de départ -->
+                    <div class="progress-step start-step active">
 
-                    <div class="progress-line"></div>
+                        ✓
 
-                    <div class="progress-step current">1</div>
+                    </div>
 
-                    <div class="progress-line"></div>
+                    <div class="progress-line completed"></div>
 
-                    <div class="progress-step">2</div>
+                    ${Array.from(
+                      { length: scenarios.length + 1 },
+                      function (_, index) {
+                        return `
+                            ${
+                              index > 0
+                                ? `<div class="progress-line ${index <= currentScenario ? "completed" : ""}"></div>`
+                                : ""
+                            }
 
-                    <div class="progress-line"></div>
+                            <!-- Cercle représentant un scénario -->
+                            <div class="progress-step
+                                ${scenarioStatus[index] === "success" ? "validated" : ""}
+                                ${scenarioStatus[index] === "failed" ? "failed" : ""}
+                                ${index === currentScenario ? "current" : ""}">
 
-                    <div class="progress-step">3</div>
+                                ${
+                                  scenarioStatus[index] === "success"
+                                    ? "✓"
+                                    : scenarioStatus[index] === "failed"
+                                      ? "✗"
+                                      : index === scenarios.length
+                                        ? "Q"
+                                        : index + 1
+                                }
 
-                    <div class="progress-line"></div>
-
-                    <div class="progress-step">4</div>
-
-                    <div class="progress-line"></div>
-
-                    <div class="progress-step">5</div>
+                            </div>
+                        `;
+                      },
+                    ).join("")}
 
                 </div>
 
+                <!-- Badge indiquant le scénario actuel -->
                 <div class="scenario-badge">
 
                     ● Scénario 0${scenario.id}/0${scenarios.length} - ${scenario.title}
 
                 </div>
 
+                <!-- Contexte métier du scénario -->
                 <div class="scenario-context">
 
                     <strong>Contexte :</strong>
@@ -70,20 +116,24 @@ function startExperience() {
 
                 </div>
 
+                <!-- Question posée à l'utilisateur -->
                 <div class="scenario-question">
 
                     ${scenario.question}
 
                 </div>
 
+                <!-- Réponse A -->
                 <button class="answer-button" data-answer="0">
                     ${scenario.answers[0]}
                 </button>
 
+                <!-- Réponse B -->
                 <button class="answer-button" data-answer="1">
                     ${scenario.answers[1]}
                 </button>
 
+                <!-- Réponse C -->
                 <button class="answer-button" data-answer="2">
                     ${scenario.answers[2]}
                 </button>
@@ -92,107 +142,184 @@ function startExperience() {
         
         `;
 
-        const answerButtons = document.querySelectorAll(".answer-button");
+    // Récupération de tous les boutons de réponse
+    const answerButtons = document.querySelectorAll(".answer-button");
 
-        answerButtons.forEach(function (button) {
+    // Ajout d'un événement click sur chaque réponse
+    answerButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        // Réponse choisie par l'utilisateur
+        const selectedAnswer = parseInt(button.dataset.answer);
 
-            button.addEventListener("click", function () {
+        // ========================================
+        // CAS N°1 : BONNE RÉPONSE
+        // ========================================
+        if (selectedAnswer === scenario.correctAnswer) {
+          // Bonne réponse trouvée du premier coup
+          if (attempts === 0) {
+            score = score + 2;
+          } else {
+            // Bonne réponse trouvée après une erreur
+            score = score + 1;
+          }
+          // ========================================
+          // AFFICHAGE DE L'ÉCRAN DE BONNE RÉPONSE
+          // ========================================
+          mainContent.innerHTML = `
+                    
+    <div class="scenario-screen">
 
-                const selectedAnswer = parseInt(button.dataset.answer);
+        <!-- Barre de progression -->
+        <div class="scenario-progress">
 
-                if (selectedAnswer === scenario.correctAnswer) {
+            <div class="progress-step start-step active">
+                ✓
+            </div>
 
-                    if (attempts === 0) {
+            <div class="progress-line completed"></div>
 
-                        score = score + 2;
-
-                    } else {
-
-                        score = score + 1;
-
+            ${Array.from({ length: scenarios.length + 1 }, function (_, index) {
+              return `
+                    ${
+                      index > 0
+                        ? `<div class="progress-line ${index <= currentScenario ? "completed" : ""}"></div>`
+                        : ""
                     }
 
-                    mainContent.innerHTML = `
-                    
-                        <div class="scenario-screen">
+                    <div class="progress-step
+                        ${scenarioStatus[index] === "success" ? "validated" : ""}
+                        ${scenarioStatus[index] === "failed" ? "failed" : ""}
+                        ${index === currentScenario ? "current" : ""}">
 
-                            <div class="feedback-box feedback-success">
-
-                                <img
-
-                                    src="assets/images/Chip_correct.svg"
-
-                                    alt="Bonne réponse"
-
-                                    class="chatty-success"
-
-                                />
-
-                                <div class="feedback-title">
-                                    Bonne réponse
-                                </div>
-
-                                <div class="feedback-text">
-                                    ${scenario.feedback}
-                                </div>
-                                <div class="takeaway-box">
-
-                                    <div class="takeaway-title">
-                                        A RETENIR POUR LA SUITE
-                                    </div>
-
-                                    <div class="takeaway-item">
-                                        ✓ ${scenario.takeaways[0]}
-                                    </div>
-
-                                    <div class="takeaway-item">
-                                        ✓ ${scenario.takeaways[1]}
-                                    </div>
-
-                                </div>
-
-                                <button id="continue-button" class="feedback-button">
-                                    Continuer
-                                </button>
-
-                            </div>
-
-                        </div>
-                    
-                    `;
-
-                    const continueButton = document.getElementById("continue-button");
-
-                    continueButton.addEventListener("click", function () {
-
-                        currentScenario++;
-
-                        attempts = 0;
-
-                        if (currentScenario < scenarios.length) {
-
-                            displayScenario();
-
-                        } else {
-
-                            showEndScreen();
-
+                        ${
+                          scenarioStatus[index] === "success"
+                            ? "✓"
+                            : scenarioStatus[index] === "failed"
+                              ? "✗"
+                              : index === scenarios.length
+                                ? "Q"
+                                : index + 1
                         }
 
-                    });
+                    </div>
+                `;
+            }).join("")}
 
-                } else {
+        </div>
 
-                    attempts++;
+        <!-- Badge scénario -->
+        <div class="scenario-badge">
 
-                    if (attempts === 1) {
+            ● Scénario 0${scenario.id}/0${scenarios.length} - ${scenario.title}
 
-                        mainContent.innerHTML = `
+        </div>
+
+        <!-- Affichage de la réponse choisie -->
+        <div class="selected-answer-box">
+
+            <div class="selected-answer-label">
+                Vous avez choisi :
+            </div>
+
+            <div class="selected-answer-text">
+                ${String.fromCharCode(65 + selectedAnswer)} - ${scenario.answers[selectedAnswer]}
+            </div>
+        </div>
+
+        <!-- Bloc de validation -->
+        <div class="feedback-box feedback-success">
+
+            <!-- Titre -->
+            <div class="feedback-title">
+                Bonne réponse
+            </div>
+
+            <!-- Explication -->
+            <div class="feedback-text">
+                ${scenario.feedback}
+            </div>
+        </div>
+
+         <!-- Mascotte de réussite -->
+            <img
+                src="assets/images/Chip_correct.svg"
+                alt="Bonne réponse"
+                class="chatty-success"
+            />
+
+        <!-- Points clés à retenir -->
+            <div class="takeaway-box">
+
+                <div class="takeaway-title">
+                    A RETENIR POUR LA SUITE
+                </div>
+
+                <div class="takeaway-item">
+                    ✓ ${scenario.takeaways[0]}
+                </div>
+
+                <div class="takeaway-item">
+                    ✓ ${scenario.takeaways[1]}
+                </div>
+
+            </div>
+
+            <!-- Bouton de passage au scénario suivant -->
+            <button id="continue-button" class="feedback-button">
+                Scénario suivant →
+            </button>
+
+    </div>
+                    
+`;
+
+          // Récupération du bouton Continuer
+          const continueButton = document.getElementById("continue-button");
+
+          // Lorsque l'utilisateur clique sur Continuer
+          continueButton.addEventListener("click", function () {
+            // Le scénario est validé
+            scenarioStatus[currentScenario] = "success";
+
+            // Passage au scénario suivant
+            currentScenario++;
+
+            // Réinitialisation du nombre de tentatives
+            attempts = 0;
+
+            // S'il reste des scénarios à jouer
+            if (currentScenario < scenarios.length) {
+              displayScenario();
+            } else {
+              // Sinon affichage de l'écran de fin
+              showEndScreen();
+            }
+          });
+        } else {
+          // ========================================
+          // CAS N°2 : MAUVAISE RÉPONSE
+          // ========================================
+
+          // Ajout d'une tentative
+          attempts++;
+
+          // Le scénario est temporairement marqué en échec
+          scenarioStatus[currentScenario] = "failed";
+
+          // ========================================
+          // PREMIÈRE ERREUR
+          // ========================================
+          if (attempts === 1) {
+            // ========================================
+            // AFFICHAGE DE L'ÉCRAN DE PREMIÈRE ERREUR
+            // ========================================
+            mainContent.innerHTML = `
                         
                             <div class="scenario-screen">
 
                                 <div class="feedback-box feedback-error">
 
+                                    <!-- Animation de réflexion -->
                                     <video
                                         class="chatty-video"
                                         autoplay
@@ -206,14 +333,17 @@ function startExperience() {
                                         >
                                     </video>
 
+                                    <!-- Titre -->
                                     <div class="feedback-title">
                                         Attention
                                     </div>
 
+                                    <!-- Explication de l'erreur -->
                                     <div class="feedback-text">
                                        ${scenario.wrongFeedback}
                                     </div>
 
+                                    <!-- Points importants à retenir -->
                                     <div class="takeaway-box">
 
                                         <div class="takeaway-title">
@@ -230,10 +360,12 @@ function startExperience() {
 
                                     </div>
 
+                                    <!-- Message indiquant qu'il reste une tentative -->
                                     <div class="feedback-text">
                                         Vous disposez encore d'une tentative.
                                     </div>
 
+                                    <!-- Bouton permettant de rejouer le scénario -->
                                     <button id="retry-button" class="feedback-button">
                                         Réessayer
                                     </button>
@@ -244,22 +376,26 @@ function startExperience() {
                         
                         `;
 
-                        const retryButton = document.getElementById("retry-button");
+            // Récupération du bouton Réessayer
+            const retryButton = document.getElementById("retry-button");
 
-                        retryButton.addEventListener("click", function () {
-
-                            displayScenario();
-
-                        });
-
-                    } else {
-
-                        mainContent.innerHTML = `
+            // Lorsque l'utilisateur clique sur Réessayer
+            retryButton.addEventListener("click", function () {
+              // Réaffichage du scénario courant
+              displayScenario();
+            });
+          } else {
+            // ========================================
+            // AFFICHAGE DE L'ÉCRAN DE DEUXIÈME ERREUR
+            // L'utilisateur a utilisé ses deux tentatives
+            // ========================================
+            mainContent.innerHTML = `
                         
                             <div class="scenario-screen">
 
                                 <div class="feedback-box feedback-error">
 
+                                    <!-- Animation d'échec -->
                                     <video
                                         class="chatty-video"
                                         autoplay
@@ -273,22 +409,29 @@ function startExperience() {
                                         >
                                     </video>
 
+                                    <!-- Titre -->
                                     <div class="feedback-title">
                                         Mauvaise réponse
                                     </div>
 
+                                    <!-- Message indiquant que toutes les tentatives ont été utilisées -->
                                     <div class="feedback-text">
                                         Vous avez utilisé vos deux tentatives.
                                     </div>
 
+                                    <!-- Affichage de la bonne réponse -->
                                     <div class="feedback-text">
                                         La bonne réponse était :
                                         <br><br>
                                         <strong>${scenario.answers[scenario.correctAnswer]}</strong>
                                     </div>
+
+                                    <!-- Explication pédagogique -->
                                     <div class="feedback-text">
                                         ${scenario.feedback}
                                     </div>
+
+                                    <!-- Points clés à retenir -->
                                     <div class="takeaway-box">
 
                                     <div class="takeaway-title">
@@ -305,6 +448,7 @@ function startExperience() {
 
                                 </div>
 
+                                    <!-- Bouton permettant de passer au scénario suivant -->
                                     <button id="continue-button" class="feedback-button">
                                         Continuer
                                     </button>
@@ -315,62 +459,61 @@ function startExperience() {
                         
                         `;
 
-                        const continueButton = document.getElementById("continue-button");
+            // Récupération du bouton Continuer
+            const continueButton = document.getElementById("continue-button");
 
-                        continueButton.addEventListener("click", function () {
+            // Lorsque l'utilisateur clique sur Continuer
+            continueButton.addEventListener("click", function () {
+              // Le scénario est définitivement marqué comme échoué
+              scenarioStatus[currentScenario] = "failed";
 
-                            currentScenario++;
+              // Passage au scénario suivant
+              currentScenario++;
 
-                            attempts = 0;
+              // Réinitialisation du compteur de tentatives
+              attempts = 0;
 
-                            if (currentScenario < scenarios.length) {
-
-                                displayScenario();
-
-                            } else {
-
-                                showEndScreen();
-
-                            }
-
-                        });
-
-                    }
-
-                }
-
+              // S'il reste des scénarios
+              if (currentScenario < scenarios.length) {
+                displayScenario();
+              } else {
+                // Sinon affichage de l'écran de fin
+                showEndScreen();
+              }
             });
+          }
+        }
+      });
+    });
+  }
 
-        });
-
+  // ========================================
+  // CALCUL DU MESSAGE DE FIN
+  // EN FONCTION DU SCORE
+  // ========================================
+  function getResultMessage() {
+    if (score >= 9) {
+      return "Excellent ! Vous maîtrisez les bons réflexes liés à l'IA.";
     }
 
-    function getResultMessage() {
-
-        if (score >= 9) {
-
-            return "Excellent ! Vous maîtrisez les bons réflexes liés à l'IA.";
-
-        }
-
-        if (score >= 7) {
-
-            return "Très bon résultat. Quelques points peuvent encore être améliorés.";
-
-        }
-
-        if (score >= 4) {
-
-            return "Résultat correct, mais certains réflexes doivent être renforcés.";
-
-        }
-
-        return "Une sensibilisation complémentaire est recommandée.";
+    if (score >= 7) {
+      return "Très bon résultat. Quelques points peuvent encore être améliorés.";
     }
 
-    function showEndScreen() {
+    if (score >= 4) {
+      return "Résultat correct, mais certains réflexes doivent être renforcés.";
+    }
 
-        mainContent.innerHTML = `
+    return "Une sensibilisation complémentaire est recommandée.";
+  }
+
+  // ========================================
+  // ÉCRAN DE FIN DU PARCOURS
+  // ========================================
+  function showEndScreen() {
+    // Construction de l'écran affiché lorsque
+    // tous les scénarios ont été terminés
+    mainContent.innerHTML = `
 
             <div class="scenario-screen">
 
@@ -388,6 +531,7 @@ function startExperience() {
                     ${getResultMessage()}
                 </p>
 
+                <!-- Bouton permettant d'accéder au quiz final -->
                 <button id="recap-button" class="feedback-button" style="margin-top: 20px;">
                     Récapitulatif
                 </button>
@@ -396,12 +540,23 @@ function startExperience() {
 
         `;
 
-        document.getElementById("recap-button").addEventListener("click", function () {
+    // Lorsque l'utilisateur clique sur Récapitulatif
+    document
+      .getElementById("recap-button")
+      .addEventListener("click", function () {
+        // On démarre le quiz récapitulatif à la question 1
+        displayRecapQuiz(0);
+      });
+  }
+
 
             recapResults = new Array(recapQuizData.length).fill(null);
             displayRecapQuiz(0);
 
-        });
+
+    // Vérifie si l'on se trouve sur la dernière question
+    const isLast = currentIndex === recapQuizData.length - 1;
+
 
     }
 
@@ -428,6 +583,7 @@ function startExperience() {
                 progressStepsHTML += '<div class="recap-progress-step">' + (i + 1) + '</div>';
             }
         }
+
 
         var miniBarsHTML = '';
         for (var j = 0; j < total; j++) {
@@ -479,6 +635,7 @@ function startExperience() {
                     '<span class="recap-status-label">Restantes</span>' +
                 '</div>' +
             '</div>';
+
 
         var answerButtons = document.querySelectorAll('.recap-answer-button');
 
@@ -546,4 +703,5 @@ function startExperience() {
 
     }
 
-}
+
+
