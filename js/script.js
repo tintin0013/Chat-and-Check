@@ -4,7 +4,7 @@ startButton.addEventListener("click", startExperience);
 
 function startExperience() {
 
-    const app = document.getElementById("app");
+    const mainContent = document.getElementById("main-content");
 
     let currentScenario = 0;
 
@@ -18,7 +18,7 @@ function startExperience() {
 
         const scenario = scenarios[currentScenario];
 
-        app.innerHTML = `
+        mainContent.innerHTML = `
         
             <div class="score-box">
                 Score : ${score} / ${scenarios.length * 2}
@@ -110,7 +110,7 @@ function startExperience() {
 
                     }
 
-                    app.innerHTML = `
+                    mainContent.innerHTML = `
                     
                         <div class="scenario-screen">
 
@@ -185,7 +185,7 @@ function startExperience() {
 
                     if (attempts === 1) {
 
-                        app.innerHTML = `
+                        mainContent.innerHTML = `
                         
                             <div class="scenario-screen">
 
@@ -252,7 +252,7 @@ function startExperience() {
 
                     } else {
 
-                        app.innerHTML = `
+                        mainContent.innerHTML = `
                         
                             <div class="scenario-screen">
 
@@ -368,7 +368,7 @@ function startExperience() {
 
     function showEndScreen() {
 
-        app.innerHTML = `
+        mainContent.innerHTML = `
 
             <div class="scenario-screen">
 
@@ -408,7 +408,7 @@ function startExperience() {
 
         const isLast = currentIndex === recapQuizData.length - 1;
 
-        app.innerHTML = `
+        mainContent.innerHTML = `
 
             <div class="scenario-screen">
 
@@ -485,7 +485,7 @@ function startExperience() {
 
             } else {
 
-                app.innerHTML = `
+                mainContent.innerHTML = `
 
                     <div class="scenario-screen">
 
