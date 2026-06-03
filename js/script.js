@@ -544,21 +544,24 @@ function startExperience() {
     document
       .getElementById("recap-button")
       .addEventListener("click", function () {
-        // On démarre le quiz récapitulatif à la question 1
-        displayRecapQuiz(0);
-      });
+
+    recapResults = new Array(recapQuizData.length).fill(null);
+
+    // On démarre le quiz récapitulatif à la question 1
+    displayRecapQuiz(0);
+});
   }
 
 
-            recapResults = new Array(recapQuizData.length).fill(null);
-            displayRecapQuiz(0);
+    //         recapResults = new Array(recapQuizData.length).fill(null);
+    //         displayRecapQuiz(0);
 
 
-    // Vérifie si l'on se trouve sur la dernière question
-    const isLast = currentIndex === recapQuizData.length - 1;
+    // // Vérifie si l'on se trouve sur la dernière question
+    // const isLast = currentIndex === recapQuizData.length - 1;
 
 
-    }
+    // }
 
     function displayRecapQuiz(currentIndex) {
 
@@ -702,6 +705,4 @@ function startExperience() {
         });
 
     }
-
-
-
+}
