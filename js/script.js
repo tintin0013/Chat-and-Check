@@ -32,8 +32,10 @@ function startExperience() {
   // failed = raté
   let scenarioStatus = Array(scenarios.length).fill("pending");
 
-  // Affichage immédiat du premier scénario
-  displayScenario();
+    let recapResults = [];
+
+    displayScenario();
+
 
   // ========================================
   // AFFICHAGE D'UN SCÉNARIO
@@ -547,142 +549,159 @@ function startExperience() {
       });
   }
 
-  // ========================================
-  // QUIZ RÉCAPITULATIF
-  // ========================================
-  function displayRecapQuiz(currentIndex) {
-    // Question actuellement affichée
-    const question = recapQuizData[currentIndex];
+
+            recapResults = new Array(recapQuizData.length).fill(null);
+            displayRecapQuiz(0);
+
 
     // Vérifie si l'on se trouve sur la dernière question
     const isLast = currentIndex === recapQuizData.length - 1;
 
-    // Construction de l'écran du quiz
-    mainContent.innerHTML = `
 
-            <div class="scenario-screen">
+    }
 
-                <h1>Quiz récapitulatif</h1>
+    function displayRecapQuiz(currentIndex) {
 
-                <p class="recap-subtitle">Bonnes pratiques IA &amp; données sensibles</p>
+        var question = recapQuizData[currentIndex];
+        var isLast = currentIndex === recapQuizData.length - 1;
+        var total = recapQuizData.length;
 
-                <!-- Progression du quiz -->
-                <div class="recap-progress">${currentIndex + 1} / ${recapQuizData.length}</div>
+        var correctCount = recapResults.filter(function(r) { return r === true; }).length;
+        var wrongCount = recapResults.filter(function(r) { return r === false; }).length;
+        var remaining = total - correctCount - wrongCount;
 
-                <!-- Question -->
-                <p class="recap-question">${question.question}</p>
+        var progressStepsHTML = '';
+        for (var i = 0; i < total; i++) {
+            if (i > 0) progressStepsHTML += '<div class="recap-progress-line"></div>';
+            if (recapResults[i] === true) {
+                progressStepsHTML += '<div class="recap-progress-step recap-progress-step-correct">✓</div>';
+            } else if (recapResults[i] === false) {
+                progressStepsHTML += '<div class="recap-progress-step recap-progress-step-wrong">✕</div>';
+            } else if (i === currentIndex) {
+                progressStepsHTML += '<div class="recap-progress-step recap-progress-step-current">' + (i + 1) + '</div>';
+            } else {
+                progressStepsHTML += '<div class="recap-progress-step">' + (i + 1) + '</div>';
+            }
+        }
 
-                <!-- Réponses -->
-                <div id="recap-answers">
-                    ${question.answers
-                      .map(function (answer, index) {
-                        return `<button class="answer-button recap-answer-button" data-index="${index}">${answer}</button>`;
-                      })
-                      .join("")}
-                </div>
 
-                <!-- Zone de feedback cachée au départ -->
-                <div id="recap-feedback" class="recap-feedback" style="display:none;"></div>
+        var miniBarsHTML = '';
+        for (var j = 0; j < total; j++) {
+            var barColor = j < currentIndex
+                ? (recapResults[j] === true ? '#07B29A' : '#BC2252')
+                : j === currentIndex ? '#D38200' : 'rgba(139,139,140,0.25)';
+            miniBarsHTML += '<div class="recap-mini-bar" style="background:' + barColor + '"></div>';
+        }
 
-                <!-- Bouton suivant caché au départ -->
-                <button id="recap-next-button" class="feedback-button recap-next-button" style="display:none;">
-                    ${isLast ? "Terminer" : "Question suivante"}
-                </button>
+        var answersHTML = question.answers.map(function(answer, index) {
+            return '<button class="answer-button recap-answer-button" data-index="' + index + '">' + answer + '</button>';
+        }).join('');
 
-            </div>
+        mainContent.innerHTML =
+            '<div class="scenario-screen recap-screen">' +
+                '<div class="recap-top-bar">' +
+                    '<div class="recap-progress">' + progressStepsHTML + '</div>' +
+                    '<button class="recap-quiz-final-badge">Quiz final</button>' +
+                '</div>' +
+                '<div class="recap-status-row">' +
+                    '<div class="recap-mini-bars">' + miniBarsHTML + '</div>' +
+                    '<span class="recap-question-counter">Question ' + (currentIndex + 1) + '/' + total + '</span>' +
+                '</div>' +
+                '<div class="recap-question-row">' +
+                    '<p class="recap-question">' + question.question + '</p>' +
+                '</div>' +
+                '<div class="recap-answer-layout">' +
+                    '<div id="recap-answers" class="recap-answers">' + answersHTML + '</div>' +
+                    '<img src="assets/images/Chip_question.svg" alt="" class="recap-chip" id="recap-chip">' +
+                '</div>' +
+                '<div id="recap-feedback" class="recap-feedback" style="display:none;"></div>' +
+                '<button id="recap-next-button" class="feedback-button recap-next-button" style="display:none;">' +
+                    (isLast ? 'Terminer' : 'Question suivante ->') +
+                '</button>' +
+            '</div>' +
+            '<div class="recap-status-panel">' +
+                '<div class="recap-status-item recap-status-correct">' +
+                    '<span class="recap-status-count" id="recap-count-correct">' + correctCount + '</span>' +
+                    '<span class="recap-status-label">Correctes</span>' +
+                '</div>' +
+                '<div class="recap-status-divider"></div>' +
+                '<div class="recap-status-item recap-status-error">' +
+                    '<span class="recap-status-count" id="recap-count-wrong">' + wrongCount + '</span>' +
+                    '<span class="recap-status-label">Erreurs</span>' +
+                '</div>' +
+                '<div class="recap-status-divider"></div>' +
+                '<div class="recap-status-item recap-status-remaining">' +
+                    '<span class="recap-status-count" id="recap-count-remaining">' + remaining + '</span>' +
+                    '<span class="recap-status-label">Restantes</span>' +
+                '</div>' +
+            '</div>';
 
-        `;
 
-    // Récupération de tous les boutons de réponse
-    const answerButtons = document.querySelectorAll(".recap-answer-button");
+        var answerButtons = document.querySelectorAll('.recap-answer-button');
 
-    // Ajout d'un événement sur chaque réponse
-    answerButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        // Réponse sélectionnée par l'utilisateur
-        const selectedIndex = parseInt(button.dataset.index);
-
-        // Vérification de la réponse
-        const isCorrect = selectedIndex === question.correctAnswer;
-
-        // Désactivation de tous les boutons après sélection
-        answerButtons.forEach(function (btn) {
-          btn.disabled = true;
+        answerButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var selectedIndex = parseInt(button.dataset.index);
+                var isCorrect = selectedIndex === question.correctAnswer;
+                recapResults[currentIndex] = isCorrect;
+                answerButtons.forEach(function(btn) { btn.disabled = true; });
+                button.classList.add(isCorrect ? 'recap-correct' : 'recap-incorrect');
+                if (!isCorrect) {
+                    answerButtons[question.correctAnswer].classList.add('recap-correct');
+                }
+                var chip = document.getElementById('recap-chip');
+                if (chip) chip.style.display = 'none';
+                var allBars = document.querySelectorAll('.recap-mini-bar');
+                if (allBars[currentIndex]) {
+                    allBars[currentIndex].style.background = isCorrect ? '#07B29A' : '#BC2252';
+                }
+                var allProgressSteps = document.querySelectorAll('.recap-progress-step');
+                if (allProgressSteps[currentIndex]) {
+                    allProgressSteps[currentIndex].classList.remove('recap-progress-step-current');
+                    allProgressSteps[currentIndex].classList.add(isCorrect ? 'recap-progress-step-correct' : 'recap-progress-step-wrong');
+                    allProgressSteps[currentIndex].textContent = isCorrect ? '✓' : '✕';
+                }
+                var cNow = recapResults.filter(function(r) { return r === true; }).length;
+                var wNow = recapResults.filter(function(r) { return r === false; }).length;
+                var rNow = total - cNow - wNow;
+                var elC = document.getElementById('recap-count-correct');
+                var elW = document.getElementById('recap-count-wrong');
+                var elR = document.getElementById('recap-count-remaining');
+                if (elC) elC.textContent = cNow;
+                if (elW) elW.textContent = wNow;
+                if (elR) elR.textContent = rNow;
+                var feedback = document.getElementById('recap-feedback');
+                feedback.innerHTML =
+                    '<p class="recap-feedback-label ' + (isCorrect ? 'recap-feedback-correct-label' : 'recap-feedback-incorrect-label') + '">' +
+                    (isCorrect ? '✓ Bonne réponse' : '✗ Mauvaise réponse') +
+                    '</p><p>' + question.explanation + '</p>';
+                feedback.style.display = 'block';
+                document.getElementById('recap-next-button').style.display = 'block';
+            });
         });
 
-        // Mise en couleur de la réponse choisie
-        button.classList.add(isCorrect ? "recap-correct" : "recap-incorrect");
+        document.getElementById('recap-next-button').addEventListener('click', function() {
+            if (!isLast) {
+                displayRecapQuiz(currentIndex + 1);
+            } else {
+                mainContent.innerHTML =
+                    '<div class="scenario-screen">' +
+                        '<h1>Quiz terminé !</h1>' +
+                        '<p>Vous avez complété le récapitulatif des bonnes pratiques IA.</p>' +
+                        '<br><p>Voici les principaux points à retenir :</p>' +
+                        '<ul class="recap-summary-list">' +
+                            '<li>Protéger les données personnelles avant toute utilisation dans une IA.</li>' +
+                            '<li>V\u00e9rifier l\'identit\u00e9 des demandeurs d\'informations sensibles.</li>' +
+                            '<li>Ne jamais partager de données confidentielles dans une IA publique.</li>' +
+                            '<li>Toujours vérifier les réponses générées par IA.</li>' +
+                            '<li>Garder un esprit critique face aux contenus IA (CV, vidéos, messages…).</li>' +
+                        '</ul>' +
+                        '<br><p><strong>N\'oubliez pas : l\'IA est un assistant, pas un rempla\u00e7ant.</strong></p>' +
+                    '</div>';
+            }
+        });
 
-        // Si la réponse est fausse,
-        // on affiche également la bonne réponse
-        if (!isCorrect) {
-          answerButtons[question.correctAnswer].classList.add("recap-correct");
-        }
+    }
 
-        // Zone d'explication
-        const feedback = document.getElementById("recap-feedback");
 
-        // Construction du message explicatif
-        feedback.innerHTML = `
-                    <p class="recap-feedback-label ${isCorrect ? "recap-feedback-correct-label" : "recap-feedback-incorrect-label"}">
-                        ${isCorrect ? "✓ Bonne réponse" : "✗ Mauvaise réponse"}
-                    </p>
-                    <p>${question.explanation}</p>
-                `;
 
-        // Affichage du bloc d'explication
-        feedback.style.display = "block";
-
-        // Affichage du bouton permettant de passer
-        // à la question suivante
-        document.getElementById("recap-next-button").style.display = "block";
-      });
-    });
-
-    // Gestion du bouton suivant
-    document
-      .getElementById("recap-next-button")
-      .addEventListener("click", function () {
-        // S'il reste des questions,
-        // on affiche la suivante
-        if (!isLast) {
-          displayRecapQuiz(currentIndex + 1);
-        } else {
-          // ========================================
-          // ÉCRAN FINAL DU QUIZ
-          // ========================================
-          mainContent.innerHTML = `
-
-                    <div class="scenario-screen">
-
-                        <h1>Quiz terminé !</h1>
-
-                        <p>Vous avez complété le récapitulatif des bonnes pratiques IA.</p>
-
-                        <br>
-
-                        <p>Voici les principaux points à retenir :</p>
-
-                        <ul class="recap-summary-list">
-                            <li>Protéger les données personnelles avant toute utilisation dans une IA.</li>
-                            <li>Vérifier l’identité des demandeurs d’informations sensibles.</li>
-                            <li>Ne jamais partager de données confidentielles dans une IA publique.</li>
-                            <li>Toujours vérifier les réponses générées par IA.</li>
-                            <li>Garder un esprit critique face aux contenus IA (CV, vidéos, messages…).</li>
-                        </ul>
-
-                        <br>
-
-                        <p>
-                            <strong>
-                                N'oubliez pas : l'IA est un assistant, pas un remplaçant.
-                            </strong>
-                        </p>
-
-                    </div>
-
-                `;
-        }
-      });
-  }
-}
