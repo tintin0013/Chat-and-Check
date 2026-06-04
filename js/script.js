@@ -2,6 +2,90 @@
 // BOUTON DE DÉMARRAGE
 // ========================================
 
+const COUNTDOWN_DURATION_MS = 10 * 60 * 1000;
+const COUNTDOWN_WARNING_THRESHOLD_MS = 60 * 1000;
+let countdownIntervalId = null;
+let countdownEndsAt = null;
+let countdownRemainingMs = COUNTDOWN_DURATION_MS;
+let countdownStartedAt = null;
+
+function ensureCountdownElement() {
+    let countdownElement = document.getElementById("countdown-timer");
+
+    if (!countdownElement) {
+        countdownElement = document.createElement("div");
+        countdownElement.id = "countdown-timer";
+        countdownElement.className = "countdown-timer countdown-timer-hidden";
+        countdownElement.setAttribute("aria-live", "polite");
+        document.body.appendChild(countdownElement);
+    }
+
+    return countdownElement;
+}
+
+function formatCountdown(ms) {
+    const safeMs = Math.max(0, ms);
+
+    if (safeMs === 0) {
+        return "Temps écoulé";
+    }
+
+    const totalSeconds = Math.floor(safeMs / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return "Temps restant : " + minutes + "min " + String(seconds).padStart(2, "0") + "sec";
+}
+
+function renderCountdown(ms) {
+    const countdownElement = ensureCountdownElement();
+    const safeMs = Math.max(0, ms);
+
+    countdownElement.textContent = formatCountdown(ms);
+    countdownElement.classList.toggle("countdown-timer-warning", safeMs <= COUNTDOWN_WARNING_THRESHOLD_MS);
+}
+
+function setCountdownRecapState(isRecapVisible) {
+    const countdownElement = ensureCountdownElement();
+    countdownElement.classList.toggle("countdown-timer-recap", isRecapVisible);
+}
+
+function startCountdown() {
+    const countdownElement = ensureCountdownElement();
+
+    if (countdownIntervalId) {
+        window.clearInterval(countdownIntervalId);
+    }
+
+    countdownRemainingMs = COUNTDOWN_DURATION_MS;
+    countdownEndsAt = Date.now() + COUNTDOWN_DURATION_MS;
+    countdownStartedAt = Date.now();
+    countdownElement.classList.remove("countdown-timer-hidden");
+    renderCountdown(countdownRemainingMs);
+
+    countdownIntervalId = window.setInterval(function () {
+        countdownRemainingMs = Math.max(0, countdownEndsAt - Date.now());
+        renderCountdown(countdownRemainingMs);
+
+        if (countdownRemainingMs === 0) {
+            freezeCountdown();
+        }
+    }, 1000);
+}
+
+function freezeCountdown() {
+    if (countdownIntervalId) {
+        window.clearInterval(countdownIntervalId);
+        countdownIntervalId = null;
+    }
+
+    if (countdownEndsAt !== null) {
+        countdownRemainingMs = Math.max(0, countdownEndsAt - Date.now());
+    }
+
+    renderCountdown(countdownRemainingMs);
+}
+
 // Récupération du bouton "Je commence"
 const startButton = document.getElementById("start-button");
 
@@ -13,6 +97,8 @@ startButton.addEventListener("click", startExperience);
 // FONCTION PRINCIPALE DU PARCOURS
 // ========================================
 function startExperience() {
+    startCountdown();
+
   // Zone principale dans laquelle tous les écrans
   // du parcours seront affichés
   const mainContent = document.getElementById("main-content");
@@ -31,6 +117,7 @@ function startExperience() {
   // success = réussi
   // failed = raté
   let scenarioStatus = Array(scenarios.length).fill("pending");
+    let scenarioSecondChanceUsed = Array(scenarios.length).fill(false);
 
     let recapResults = [];
 
@@ -41,6 +128,8 @@ function startExperience() {
   // AFFICHAGE D'UN SCÉNARIO
   // ========================================
   function displayScenario() {
+        setCountdownRecapState(false);
+
     // Récupération du scénario en cours
     const scenario = scenarios[currentScenario];
 
@@ -312,6 +401,10 @@ function startExperience() {
 
           // Ajout d'une tentative
           attempts++;
+
+                    if (!scenarioSecondChanceUsed[currentScenario]) {
+                        scenarioSecondChanceUsed[currentScenario] = true;
+                    }
 
           // Le scénario est temporairement marqué en échec
           scenarioStatus[currentScenario] = "warning";
@@ -698,6 +791,8 @@ function startExperience() {
   // ÉCRAN DE FIN DU PARCOURS
   // ========================================
   function showEndScreen() {
+        setCountdownRecapState(false);
+
     // Construction de l'écran affiché lorsque
     // tous les scénarios ont été terminés
     mainContent.innerHTML = `
@@ -720,7 +815,7 @@ function startExperience() {
 
                 <!-- Bouton permettant d'accéder au quiz final -->
                 <button id="recap-button" class="feedback-button" style="margin-top: 20px;">
-                    Récapitulatif
+                    Quiz Récapitulatif
                 </button>
 
             </div>
@@ -747,6 +842,66 @@ function startExperience() {
             "Toujours vérifier les réponses générées par IA.",
             "Garder un esprit critique face aux contenus IA (CV, vidéos, messages…)."
         ];
+    }
+
+    function getScenarioSummaryContent(scenarioScore, totalScore) {
+        if (scenarioScore >= 7) {
+            return {
+                color: "#07B29A",
+                message: "Scénarios OK"
+            };
+        }
+
+        if (scenarioScore >= 5) {
+            return {
+                color: "#D38200",
+                message: "Scénarios corrects"
+            };
+        }
+
+        return {
+            color: "#DE696B",
+            message: "Scénarios à renforcer"
+        };
+    }
+
+    function getRecapQuizSummaryContent(finalScore) {
+        if (finalScore >= 4) {
+            return {
+                color: "#07B29A",
+                message: "Quiz : OK"
+            };
+        }
+
+        if (finalScore === 3) {
+            return {
+                color: "#D38200",
+                message: "Quiz : Correct"
+            };
+        }
+
+        return {
+            color: "#DE696B",
+            message: "Quiz : À renforcer"
+        };
+    }
+
+    function getElapsedQuizLabel() {
+        if (countdownStartedAt === null) {
+            return "0:00";
+        }
+
+        var elapsedMs = Date.now() - countdownStartedAt;
+
+        if (elapsedMs > COUNTDOWN_DURATION_MS) {
+            return "+ 10mn";
+        }
+
+        var totalSeconds = Math.floor(elapsedMs / 1000);
+        var minutes = Math.floor(totalSeconds / 60);
+        var seconds = totalSeconds % 60;
+
+        return minutes + ":" + String(seconds).padStart(2, "0");
     }
 
     function downloadEssentialRulesPdf(finalScore, finalTotal, finalResultContent) {
@@ -903,6 +1058,8 @@ function startExperience() {
 
     function displayRecapQuiz(currentIndex) {
 
+        setCountdownRecapState(true);
+
         var question = recapQuizData[currentIndex];
         var isLast = currentIndex === recapQuizData.length - 1;
         var total = recapQuizData.length;
@@ -1011,6 +1168,11 @@ function startExperience() {
                 var selectedIndex = parseInt(button.dataset.index);
                 var isCorrect = selectedIndex === question.correctAnswer;
                 recapResults[currentIndex] = isCorrect;
+
+                if (isLast) {
+                    freezeCountdown();
+                }
+
                 answerButtons.forEach(function(btn) { btn.disabled = true; });
                 button.classList.add(isCorrect ? 'recap-correct' : 'recap-incorrect');
                 if (!isCorrect) {
@@ -1054,6 +1216,14 @@ function startExperience() {
                 var finalScore = recapResults.filter(function(r) { return r === true; }).length;
                 var finalTotal = recapQuizData.length;
                 var finalResultContent = getRecapResultContent(finalScore, finalTotal);
+                var scenarioScore = score;
+                var scenarioTotalScore = scenarios.length * 2;
+                var usedSecondChanceCount = scenarioSecondChanceUsed.filter(function(usedSecondChance) {
+                    return usedSecondChance;
+                }).length;
+                var scenarioSummaryContent = getScenarioSummaryContent(scenarioScore, scenarioTotalScore);
+                var quizSummaryContent = getRecapQuizSummaryContent(finalScore);
+                var elapsedQuizLabel = getElapsedQuizLabel();
                 var restartIconPath = 'assets/images/arrow.png';
                 var downloadIconPath = 'assets/images/upload.png';
                 var essentialRulesHTML = getEssentialRules().map(function(rule, index) {
@@ -1079,6 +1249,24 @@ function startExperience() {
                             '</div>' +
                             '<button id="close-kit-button" class="quiz-finished-close-button">Fermer le kit</button>' +
                         '</div>' +
+                        '<div class="quiz-finished-stats" aria-label="Résumé des performances">' +
+                            '<div class="quiz-finished-stat">' +
+                                '<span class="quiz-finished-stat-value" style="color: ' + scenarioSummaryContent.color + ';">' + scenarioScore + '/' + scenarioTotalScore + '</span>' +
+                                '<span class="quiz-finished-stat-label">' + scenarioSummaryContent.message + '</span>' +
+                            '</div>' +
+                            '<div class="quiz-finished-stat">' +
+                                '<span class="quiz-finished-stat-value" style="color: ' + quizSummaryContent.color + ';">' + finalScore + '/' + finalTotal + '</span>' +
+                                '<span class="quiz-finished-stat-label">' + quizSummaryContent.message + '</span>' +
+                            '</div>' +
+                            '<div class="quiz-finished-stat">' +
+                                '<span class="quiz-finished-stat-value quiz-finished-stat-value-time">' + elapsedQuizLabel + '</span>' +
+                                '<span class="quiz-finished-stat-label">Temps total</span>' +
+                            '</div>' +
+                            '<div class="quiz-finished-stat">' +
+                                '<span class="quiz-finished-stat-value" style="color: #D38200;">' + usedSecondChanceCount + '</span>' +
+                                '<span class="quiz-finished-stat-label quiz-finished-stat-label-white">2e chance utilisée</span>' +
+                            '</div>' +
+                        '</div>' +
                         '<div class="quiz-finished-takeaways">' +
                             '<h2 class="quiz-finished-rules-title">LES 5 REGLES ESSENTIELLES</h2>' +
                             '<ol class="quiz-finished-rules-list">' + essentialRulesHTML + '</ol>' +
@@ -1095,6 +1283,8 @@ function startExperience() {
                                 '</button>' +
                             '</div>' +
                     '</div>';
+
+                setCountdownRecapState(false);
 
                 document.getElementById('close-kit-button').addEventListener('click', function() {
                     window.location.reload();
