@@ -705,6 +705,36 @@ body {
     color: #ffffff;
 }
 
+[data-theme="dark"] .feedback-success {
+    background-color: #151520;
+    border: 1px solid #303040;
+    border-left: 6px solid #00C7B7;
+}
+
+[data-theme="dark"] .feedback-error {
+    background-color: #151520;
+    border: 1px solid #BC2252;
+    border-left: 6px solid #BC2252;
+}
+
+[data-theme="dark"] .selected-answer-box {
+    background-color: #151520;
+    border: 1px solid #303040;
+}
+
+[data-theme="dark"] .takeaway-item {
+     background-color: #151520;
+    border: 1px solid #303040;
+}
+
+[data-theme="dark"] .feedback-title,
+[data-theme="dark"] .feedback-text,
+[data-theme="dark"] .selected-answer-label,
+[data-theme="dark"] .takeaway-item,
+[data-theme="dark"] .takeaway-title {
+    color: #FFFFFF;
+}
+
 .chatty-video {
     width: 220px;
     display: block;
