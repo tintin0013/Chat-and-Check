@@ -1,160 +1,270 @@
+// ========================================
+// SCÉNARIOS PRINCIPAUX DU PARCOURS
+// ========================================
+
 const scenarios = [
-    {
-        id: 1,
-        title: "Le recrutement express",
-        role: "Vous êtes assistant RH.",
-        description: "Votre responsable vous demande d’analyser rapidement plusieurs CV reçus pour un recrutement. Pour gagner du temps, vous envisagez d’utiliser une IA générative afin d’obtenir un résumé des candidatures.",
-        question: "Que faites-vous ?",
-        answers: [
-            "Copier-coller les CV complets dans l’IA",
-            "Anonymiser les CV avant utilisation puis demander un résumé",
-            "Envoyer les CV à une IA publique via votre compte personnel"
-        ],
-        correctAnswer: 1,
-        hint: "Réfléchissez aux informations présentes dans un CV. Certaines données peuvent-elles être considérées comme personnelles ou sensibles ?",
-        feedback: "Les CV contiennent des données personnelles (nom, adresse, téléphone, parcours professionnel). Avant toute utilisation dans un outil d’IA, ces informations doivent être anonymisées ou traitées selon les règles internes de l’entreprise. Les données personnelles ne doivent jamais être partagées sans précaution.",
-        takeaways: [
-            "Identifier les données personnelles avant d'utiliser une IA.",
-            "Vérifier que l'outil IA utilisé est conforme aux règles de l'entreprise."
-        ],
-        wrongFeedback: "Les CV contiennent de nombreuses données personnelles. Avant d'utiliser une IA, il faut toujours vérifier quelles informations sont transmises et si elles peuvent être anonymisées.",
-        wrongTakeaways: [
-            "Les CV contiennent des données personnelles à protéger.",
-            "Une IA publique ne doit jamais recevoir des informations nominatives sans précaution.",
-],
-    },
-    {
-        id: 2,
-        title: "Le mail urgent du directeur",
-        role: "Vous êtes assistant administratif.",
-        description: "À 17h45, vous recevez un mail semblant provenir du directeur général. Il vous demande d’envoyer rapidement la liste complète des salariés avec leurs coordonnées afin de préparer une réunion urgente. L’adresse ressemble à celle du directeur mais contient une légère différence.",
-        question: "Que faites-vous ?",
-        answers: [
-            "J’envoie immédiatement les informations demandées",
-            "Je transfère le mail à plusieurs collègues pour leur demander leur avis",
-            "Je vérifie l’identité de l’expéditeur via un autre canal avant toute action"
-        ],
-        correctAnswer: 2,
-        hint: "L'urgence d'une demande ne garantit pas son authenticité. Comment pourriez-vous vérifier l'identité de l'expéditeur ?",
-        feedback: "Les outils IA permettent aujourd’hui de créer des messages extrêmement crédibles. Avant de transmettre des données sensibles, il faut toujours vérifier l’identité du demandeur. Ne faites jamais confiance à un message uniquement parce qu’il semble authentique.",
-        takeaways: [
-        "Contrôler l'identité d'un demandeur avant de transmettre des informations sensibles.",
-        "Rester vigilant face aux demandes urgentes ou inhabituelles."
-        ],
-        wrongFeedback: "Une demande urgente n'est pas forcément légitime. Les cyberattaques utilisent souvent l'urgence et l'autorité pour pousser à agir sans vérifier.",
-        wrongTakeaways: [
-            "Toujours vérifier l'identité du demandeur avant de transmettre des données sensibles.",
-            "L'urgence est souvent utilisée pour pousser à agir sans contrôle.",
-],
-    },
-    {
-        id: 3,
-        title: "Le compte-rendu disciplinaire",
-        role: "Vous êtes assistant RH.",
-        description: "Un manager vous demande de rédiger un compte-rendu à partir d’un document contenant des informations disciplinaires concernant plusieurs salariés. Vous pensez utiliser une IA pour accélérer la rédaction.",
-        question: "Quelle est la meilleure décision ?",
-        answers: [
-            "Utiliser directement le document dans une IA publique",
-            "Anonymiser les informations sensibles avant toute utilisation",
-            "Partager le document avec un collègue qui possède un abonnement IA"
-        ],
-        correctAnswer: 1,
-        hint: "Réfléchissez à la nature des informations contenues dans ce document. Peuvent-elles être diffusées sans précaution ?",
-        feedback: "Les informations disciplinaires font partie des données particulièrement sensibles. Elles ne doivent pas être transmises à des outils externes sans précautions. L’IA n’est pas un espace de stockage sécurisé pour les données confidentielles.",
-        takeaways: [
-            "Classer les informations selon leur niveau de confidentialité.",
-            "Limiter le partage des données sensibles aux personnes autorisées."
-        ],
-        wrongFeedback: "Les informations disciplinaires font partie des données sensibles. Leur diffusion doit être strictement contrôlée, même lorsqu'un outil semble pratique.",
-        wrongTakeaways: [
-            "Les informations disciplinaires sont des données sensibles.",
-            "Les données confidentielles ne doivent pas être partagées sans autorisation.",
-],
-    },
-    {
-        id: 4,
-        title: "La réponse convaincante",
-        role: "Vous êtes assistant administratif.",
-        description: "Un collaborateur vous demande combien de jours de télétravail sont autorisés dans l’entreprise. Vous interrogez une IA qui répond : 'Les salariés ont droit à 3 jours de télétravail par semaine selon la politique interne.' Vous ne connaissez pas la règle officielle.",
-        question: "Que faites-vous ?",
-        answers: [
-            "Je transmets directement la réponse",
-            "Je demande à l’IA de confirmer sa réponse",
-            "Je consulte la politique interne officielle avant de répondre"
-        ],
-        correctAnswer: 2,
-        hint: "Une réponse formulée avec assurance est-elle forcément exacte ? Quelle source pourrait confirmer l'information ?",
-        feedback: "L’IA peut produire une réponse convaincante mais incorrecte. Même lorsqu’elle paraît certaine d’elle, ses informations doivent être vérifiées. Une réponse IA n’est pas une preuve.",
-        takeaways: [
-            "S'appuyer sur des sources officielles pour prendre une décision.",
-            "Conserver un regard critique sur les réponses générées par l'IA."
-        ],
-        wrongFeedback: "Une réponse générée par IA peut sembler très crédible tout en étant incorrecte. Une vérification auprès d'une source officielle reste indispensable.",
-        wrongTakeaways: [
-            "Une réponse IA doit toujours être vérifiée dans une source officielle.",
-            "Une réponse convaincante n'est pas forcément correcte.",
-],
-    },
-    {
-        id: 5,
-        title: "Le candidat idéal",
-        role: "Vous participez à un recrutement.",
-        description: "Vous recevez un CV remarquable accompagné d’une vidéo de présentation très professionnelle. Un collègue vous rappelle que certains candidats utilisent désormais des contenus générés par IA ou des deepfakes.",
-        question: "Quelle est la meilleure réaction ?",
-        answers: [
-            "Rejeter automatiquement tous les candidats utilisant l’IA",
-            "Vérifier les informations du candidat et organiser un entretien",
-            "Accepter immédiatement la candidature"
-        ],
-        correctAnswer: 1,
-        hint: "Une présentation très convaincante garantit-elle que les informations sont exactes ? Quelle étape permettrait de le vérifier ?",
-        feedback: "Les outils IA peuvent aider les candidats à améliorer leur présentation, mais ils peuvent aussi être utilisés pour tromper les recruteurs. La vérification humaine reste indispensable. L’esprit critique reste votre meilleur outil face aux contenus générés par IA.",
-        takeaways: [
-            "Vérifier les informations importantes avant de prendre une décision.",
-            "Combiner les outils IA avec une validation humaine."
-        ],
-        wrongFeedback: "Une candidature très convaincante ne garantit pas que toutes les informations sont exactes. Les contenus générés par IA doivent toujours être vérifiés.",
-        wrongTakeaways: [
-            "Les contenus générés par IA doivent être vérifiés avant toute décision.",
-            "La validation humaine reste indispensable lors d'un recrutement.",
-],
-    }
+  // ========================================
+  // SCÉNARIO 1
+  // ========================================
+  {
+    // Identifiant du scénario
+    id: 1,
+
+    // Titre affiché dans le badge
+    title: "Le recrutement express",
+
+    // Rôle de l'utilisateur dans le contexte
+    role: "Vous êtes assistant RH.",
+
+    // Situation présentée à l'utilisateur
+    description:
+      "Votre responsable vous demande d’analyser rapidement plusieurs CV reçus pour un recrutement. Pour gagner du temps, vous envisagez d’utiliser une IA générative afin d’obtenir un résumé des candidatures.",
+
+    // Question posée
+    question: "Que faites-vous ?",
+
+    // Réponses proposées
+    answers: [
+      "Copier-coller les CV complets dans l’IA",
+      "Anonymiser les CV avant utilisation puis demander un résumé",
+      "Envoyer les CV à une IA publique via votre compte personnel",
+    ],
+
+    // Index de la bonne réponse
+    correctAnswer: 1,
+
+    // Indice éventuel
+    hint: "Réfléchissez aux informations présentes dans un CV. Certaines données peuvent-elles être considérées comme personnelles ou sensibles ?",
+
+    // Explication affichée après une bonne réponse
+    feedback:
+      "Les CV contiennent des données personnelles (nom, adresse, téléphone, parcours professionnel). Avant toute utilisation dans un outil d’IA, ces informations doivent être anonymisées ou traitées selon les règles internes de l’entreprise. Les données personnelles ne doivent jamais être partagées sans précaution.",
+
+    // Points à retenir après réussite
+    takeaways: [
+      "Identifier les données personnelles avant d'utiliser une IA.",
+      "Vérifier que l'outil IA utilisé est conforme aux règles de l'entreprise.",
+    ],
+
+    // Explication affichée après une erreur
+    wrongFeedback:
+      "Les CV contiennent de nombreuses données personnelles. Avant d'utiliser une IA, il faut toujours vérifier quelles informations sont transmises et si elles peuvent être anonymisées.",
+
+    // Points à retenir après une erreur
+    wrongTakeaways: [
+      "Les CV contiennent des données personnelles à protéger.",
+      "Une IA publique ne doit jamais recevoir des informations nominatives sans précaution.",
+    ],
+  },
+
+  // ========================================
+  // SCÉNARIO 2
+  // ========================================
+  {
+    id: 2,
+    title: "Le mail urgent du directeur",
+    role: "Vous êtes assistant administratif.",
+    description:
+      "À 17h45, vous recevez un mail semblant provenir du directeur général. Il vous demande d’envoyer rapidement la liste complète des salariés avec leurs coordonnées afin de préparer une réunion urgente. L’adresse ressemble à celle du directeur mais contient une légère différence.",
+    question: "Que faites-vous ?",
+
+    answers: [
+      "J’envoie immédiatement les informations demandées",
+      "Je transfère le mail à plusieurs collègues pour leur demander leur avis",
+      "Je vérifie l’identité de l’expéditeur via un autre canal avant toute action",
+    ],
+
+    correctAnswer: 2,
+
+    hint: "L'urgence d'une demande ne garantit pas son authenticité. Comment pourriez-vous vérifier l'identité de l'expéditeur ?",
+
+    feedback:
+      "Les outils IA permettent aujourd’hui de créer des messages extrêmement crédibles. Avant de transmettre des données sensibles, il faut toujours vérifier l’identité du demandeur. Ne faites jamais confiance à un message uniquement parce qu’il semble authentique.",
+
+    takeaways: [
+      "Contrôler l'identité d'un demandeur avant de transmettre des informations sensibles.",
+      "Rester vigilant face aux demandes urgentes ou inhabituelles.",
+    ],
+
+    wrongFeedback:
+      "Une demande urgente n'est pas forcément légitime. Les cyberattaques utilisent souvent l'urgence et l'autorité pour pousser à agir sans vérifier.",
+
+    wrongTakeaways: [
+      "Toujours vérifier l'identité du demandeur avant de transmettre des données sensibles.",
+      "L'urgence est souvent utilisée pour pousser à agir sans contrôle.",
+    ],
+  },
+
+  // ========================================
+  // SCÉNARIO 3
+  // ========================================
+  {
+    id: 3,
+    title: "Le compte-rendu disciplinaire",
+    role: "Vous êtes assistant RH.",
+    description:
+      "Un manager vous demande de rédiger un compte-rendu à partir d’un document contenant des informations disciplinaires concernant plusieurs salariés. Vous pensez utiliser une IA pour accélérer la rédaction.",
+    question: "Quelle est la meilleure décision ?",
+
+    answers: [
+      "Utiliser directement le document dans une IA publique",
+      "Anonymiser les informations sensibles avant toute utilisation",
+      "Partager le document avec un collègue qui possède un abonnement IA",
+    ],
+
+    correctAnswer: 1,
+
+    hint: "Réfléchissez à la nature des informations contenues dans ce document. Peuvent-elles être diffusées sans précaution ?",
+
+    feedback:
+      "Les informations disciplinaires font partie des données particulièrement sensibles. Elles ne doivent pas être transmises à des outils externes sans précautions. L’IA n’est pas un espace de stockage sécurisé pour les données confidentielles.",
+
+    takeaways: [
+      "Classer les informations selon leur niveau de confidentialité.",
+      "Limiter le partage des données sensibles aux personnes autorisées.",
+    ],
+
+    wrongFeedback:
+      "Les informations disciplinaires font partie des données sensibles. Leur diffusion doit être strictement contrôlée, même lorsqu'un outil semble pratique.",
+
+    wrongTakeaways: [
+      "Les informations disciplinaires sont des données sensibles.",
+      "Les données confidentielles ne doivent pas être partagées sans autorisation.",
+    ],
+  },
+
+  // ========================================
+  // SCÉNARIO 4
+  // ========================================
+  {
+    id: 4,
+    title: "La réponse convaincante",
+    role: "Vous êtes assistant administratif.",
+    description:
+      "Un collaborateur vous demande combien de jours de télétravail sont autorisés dans l’entreprise. Vous interrogez une IA qui répond : 'Les salariés ont droit à 3 jours de télétravail par semaine selon la politique interne.' Vous ne connaissez pas la règle officielle.",
+    question: "Que faites-vous ?",
+
+    answers: [
+      "Je transmets directement la réponse",
+      "Je demande à l’IA de confirmer sa réponse",
+      "Je consulte la politique interne officielle avant de répondre",
+    ],
+
+    correctAnswer: 2,
+
+    hint: "Une réponse formulée avec assurance est-elle forcément exacte ? Quelle source pourrait confirmer l'information ?",
+
+    feedback:
+      "L’IA peut produire une réponse convaincante mais incorrecte. Même lorsqu’elle paraît certaine d’elle, ses informations doivent être vérifiées. Une réponse IA n’est pas une preuve.",
+
+    takeaways: [
+      "S'appuyer sur des sources officielles pour prendre une décision.",
+      "Conserver un regard critique sur les réponses générées par l'IA.",
+    ],
+
+    wrongFeedback:
+      "Une réponse générée par IA peut sembler très crédible tout en étant incorrecte. Une vérification auprès d'une source officielle reste indispensable.",
+
+    wrongTakeaways: [
+      "Une réponse IA doit toujours être vérifiée dans une source officielle.",
+      "Une réponse convaincante n'est pas forcément correcte.",
+    ],
+  },
+
+  // ========================================
+  // SCÉNARIO 5
+  // ========================================
+  {
+    id: 5,
+    title: "Le candidat idéal",
+    role: "Vous participez à un recrutement.",
+    description:
+      "Vous recevez un CV remarquable accompagné d’une vidéo de présentation très professionnelle. Un collègue vous rappelle que certains candidats utilisent désormais des contenus générés par IA ou des deepfakes.",
+    question: "Quelle est la meilleure réaction ?",
+
+    answers: [
+      "Rejeter automatiquement tous les candidats utilisant l’IA",
+      "Vérifier les informations du candidat et organiser un entretien",
+      "Accepter immédiatement la candidature",
+    ],
+
+    correctAnswer: 1,
+
+    hint: "Une présentation très convaincante garantit-elle que les informations sont exactes ? Quelle étape permettrait de le vérifier ?",
+
+    feedback:
+      "Les outils IA peuvent aider les candidats à améliorer leur présentation, mais ils peuvent aussi être utilisés pour tromper les recruteurs. La vérification humaine reste indispensable. L’esprit critique reste votre meilleur outil face aux contenus générés par IA.",
+
+    takeaways: [
+      "Vérifier les informations importantes avant de prendre une décision.",
+      "Combiner les outils IA avec une validation humaine.",
+    ],
+
+    wrongFeedback:
+      "Une candidature très convaincante ne garantit pas que toutes les informations sont exactes. Les contenus générés par IA doivent toujours être vérifiés.",
+
+    wrongTakeaways: [
+      "Les contenus générés par IA doivent être vérifiés avant toute décision.",
+      "La validation humaine reste indispensable lors d'un recrutement.",
+    ],
+  },
 ];
 
+// ========================================
+// QUESTIONS DU QUIZ FINAL
+// ========================================
+
 const recapQuizData = [
-    {
-        id: 1,
-        question: "Peut-on envoyer un CV complet contenant des données personnelles dans une IA publique ?",
-        answers: ["Oui", "Non"],
-        correctAnswer: 1,
-        explanation: "Les CV doivent être anonymisés avant utilisation."
-    },
-    {
-        id: 2,
-        question: "Un mail semble venir du directeur et demande des données sensibles. Faut-il lui répondre immédiatement ?",
-        answers: ["Oui", "Non"],
-        correctAnswer: 1,
-        explanation: "Toujours vérifier l'identité via un autre canal (Exemple Teams)."
-    },
-    {
-        id: 3,
-        question: "Peut-on utiliser des données sensibles dans une IA interne sécurisée validée par l’entreprise ?",
-        answers: ["Oui", "Non"],
-        correctAnswer: 0,
-        explanation: "L’utilisation est autorisée lorsque l’outil est interne, conforme aux règles de sécurité et approuvé par l’entreprise."
-    },
-    {
-        id: 4,
-        question: "Peut-on faire aveuglément confiance à une réponse donnée par une IA ?",
-        answers: ["Oui", "Non"],
-        correctAnswer: 1,
-        explanation: "Une réponse IA n'est jamais une preuve. Toujours vérifier dans les sources officielles."
-    },
-    {
-        id: 5,
-        question: "Peut-on accepter un candidat qui a utilisé l’IA dans son CV ?",
-        answers: ["Oui", "Non"],
-        correctAnswer: 0,
-        explanation: "L’usage de l’IA n’est pas un problème tant que les informations sont vraies. Il faut donc vérifier les compétences et l’identité du candidat lors de l’entretien."
-    }
+  // Question 1
+  {
+    id: 1,
+    question:
+      "Peut-on envoyer un CV complet contenant des données personnelles dans une IA publique ?",
+    answers: ["Oui", "Non"],
+    correctAnswer: 1,
+    explanation: "Les CV doivent être anonymisés avant utilisation.",
+  },
+
+  // Question 2
+  {
+    id: 2,
+    question:
+      "Un mail semble venir du directeur et demande des données sensibles. Faut-il lui répondre immédiatement ?",
+    answers: ["Oui", "Non"],
+    correctAnswer: 1,
+    explanation:
+      "Toujours vérifier l'identité via un autre canal (Exemple Teams).",
+  },
+
+  // Question 3
+  {
+    id: 3,
+    question:
+      "Peut-on utiliser des données sensibles dans une IA interne sécurisée validée par l’entreprise ?",
+    answers: ["Oui", "Non"],
+    correctAnswer: 0,
+    explanation:
+      "L’utilisation est autorisée lorsque l’outil est interne, conforme aux règles de sécurité et approuvé par l’entreprise.",
+  },
+
+  // Question 4
+  {
+    id: 4,
+    question:
+      "Peut-on faire aveuglément confiance à une réponse donnée par une IA ?",
+    answers: ["Oui", "Non"],
+    correctAnswer: 1,
+    explanation:
+      "Une réponse IA n'est jamais une preuve. Toujours vérifier dans les sources officielles.",
+  },
+
+  // Question 5
+  {
+    id: 5,
+    question: "Peut-on accepter un candidat qui a utilisé l’IA dans son CV ?",
+    answers: ["Oui", "Non"],
+    correctAnswer: 0,
+    explanation:
+      "L’usage de l’IA n’est pas un problème tant que les informations sont vraies. Il faut donc vérifier les compétences et l’identité du candidat lors de l’entretien.",
+  },
 ];
