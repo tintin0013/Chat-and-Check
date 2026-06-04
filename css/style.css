@@ -913,11 +913,13 @@ body {
 }
 
 .recap-chip {
-    width: 80px;
-    height: auto;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
     flex-shrink: 0;
     align-self: flex-start;
-    margin-right: 300px;
+    margin-right: 200px;
+    animation: successAnimation 2s infinite ease-in-out;
 }
 
 .recap-answer-layout {
@@ -1103,7 +1105,7 @@ body {
 }
 
 [data-theme="light"] .quiz-finished-title {
-    color: #8b85ff;
+    color: #7C3AED;
 }
 
 .quiz-finished-description,
@@ -1207,6 +1209,14 @@ body {
     color: #8B8B8C;
 }
 
+.quiz-finished-rules {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 24px;
+    position: relative;
+}
+
 .quiz-finished-rules-list {
     list-style: none;
     display: flex;
@@ -1214,7 +1224,17 @@ body {
     gap: 14px;
     padding: 0;
     margin: 0;
+    flex: 1;
 }
+
+.quiz-finished-rules .recap-chip {
+    position: absolute;
+    right: -300px;
+    bottom: 0;
+    flex-shrink: 0;
+    margin: 0;
+}
+
 
 .quiz-finished-rule-item {
     display: flex;
