@@ -10,80 +10,89 @@ let countdownRemainingMs = COUNTDOWN_DURATION_MS;
 let countdownStartedAt = null;
 
 function ensureCountdownElement() {
-    let countdownElement = document.getElementById("countdown-timer");
+  let countdownElement = document.getElementById("countdown-timer");
 
-    if (!countdownElement) {
-        countdownElement = document.createElement("div");
-        countdownElement.id = "countdown-timer";
-        countdownElement.className = "countdown-timer countdown-timer-hidden";
-        countdownElement.setAttribute("aria-live", "polite");
-        document.body.appendChild(countdownElement);
-    }
+  if (!countdownElement) {
+    countdownElement = document.createElement("div");
+    countdownElement.id = "countdown-timer";
+    countdownElement.className = "countdown-timer countdown-timer-hidden";
+    countdownElement.setAttribute("aria-live", "polite");
+    document.body.appendChild(countdownElement);
+  }
 
-    return countdownElement;
+  return countdownElement;
 }
 
 function formatCountdown(ms) {
-    const safeMs = Math.max(0, ms);
+  const safeMs = Math.max(0, ms);
 
-    if (safeMs === 0) {
-        return "Temps écoulé";
-    }
+  if (safeMs === 0) {
+    return "Temps écoulé";
+  }
 
-    const totalSeconds = Math.floor(safeMs / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
+  const totalSeconds = Math.floor(safeMs / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
 
-    return "Temps restant : " + minutes + "min " + String(seconds).padStart(2, "0") + "sec";
+  return (
+    "Temps restant : " +
+    minutes +
+    "min " +
+    String(seconds).padStart(2, "0") +
+    "sec"
+  );
 }
 
 function renderCountdown(ms) {
-    const countdownElement = ensureCountdownElement();
-    const safeMs = Math.max(0, ms);
+  const countdownElement = ensureCountdownElement();
+  const safeMs = Math.max(0, ms);
 
-    countdownElement.textContent = formatCountdown(ms);
-    countdownElement.classList.toggle("countdown-timer-warning", safeMs <= COUNTDOWN_WARNING_THRESHOLD_MS);
+  countdownElement.textContent = formatCountdown(ms);
+  countdownElement.classList.toggle(
+    "countdown-timer-warning",
+    safeMs <= COUNTDOWN_WARNING_THRESHOLD_MS,
+  );
 }
 
 function setCountdownRecapState(isRecapVisible) {
-    const countdownElement = ensureCountdownElement();
-    countdownElement.classList.toggle("countdown-timer-recap", isRecapVisible);
+  const countdownElement = ensureCountdownElement();
+  countdownElement.classList.toggle("countdown-timer-recap", isRecapVisible);
 }
 
 function startCountdown() {
-    const countdownElement = ensureCountdownElement();
+  const countdownElement = ensureCountdownElement();
 
-    if (countdownIntervalId) {
-        window.clearInterval(countdownIntervalId);
-    }
+  if (countdownIntervalId) {
+    window.clearInterval(countdownIntervalId);
+  }
 
-    countdownRemainingMs = COUNTDOWN_DURATION_MS;
-    countdownEndsAt = Date.now() + COUNTDOWN_DURATION_MS;
-    countdownStartedAt = Date.now();
-    countdownElement.classList.remove("countdown-timer-hidden");
+  countdownRemainingMs = COUNTDOWN_DURATION_MS;
+  countdownEndsAt = Date.now() + COUNTDOWN_DURATION_MS;
+  countdownStartedAt = Date.now();
+  countdownElement.classList.remove("countdown-timer-hidden");
+  renderCountdown(countdownRemainingMs);
+
+  countdownIntervalId = window.setInterval(function () {
+    countdownRemainingMs = Math.max(0, countdownEndsAt - Date.now());
     renderCountdown(countdownRemainingMs);
 
-    countdownIntervalId = window.setInterval(function () {
-        countdownRemainingMs = Math.max(0, countdownEndsAt - Date.now());
-        renderCountdown(countdownRemainingMs);
-
-        if (countdownRemainingMs === 0) {
-            freezeCountdown();
-        }
-    }, 1000);
+    if (countdownRemainingMs === 0) {
+      freezeCountdown();
+    }
+  }, 1000);
 }
 
 function freezeCountdown() {
-    if (countdownIntervalId) {
-        window.clearInterval(countdownIntervalId);
-        countdownIntervalId = null;
-    }
+  if (countdownIntervalId) {
+    window.clearInterval(countdownIntervalId);
+    countdownIntervalId = null;
+  }
 
-    if (countdownEndsAt !== null) {
-        countdownRemainingMs = Math.max(0, countdownEndsAt - Date.now());
-    }
+  if (countdownEndsAt !== null) {
+    countdownRemainingMs = Math.max(0, countdownEndsAt - Date.now());
+  }
 
-    renderCountdown(countdownRemainingMs);
+  renderCountdown(countdownRemainingMs);
 }
 
 // Récupération du bouton "Je commence"
@@ -97,7 +106,7 @@ startButton.addEventListener("click", startExperience);
 // FONCTION PRINCIPALE DU PARCOURS
 // ========================================
 function startExperience() {
-    startCountdown();
+  startCountdown();
 
   // Zone principale dans laquelle tous les écrans
   // du parcours seront affichés
@@ -117,18 +126,17 @@ function startExperience() {
   // success = réussi
   // failed = raté
   let scenarioStatus = Array(scenarios.length).fill("pending");
-    let scenarioSecondChanceUsed = Array(scenarios.length).fill(false);
+  let scenarioSecondChanceUsed = Array(scenarios.length).fill(false);
 
-    let recapResults = [];
+  let recapResults = [];
 
-    displayScenario();
-
+  displayScenario();
 
   // ========================================
   // AFFICHAGE D'UN SCÉNARIO
   // ========================================
   function displayScenario() {
-        setCountdownRecapState(false);
+    setCountdownRecapState(false);
 
     // Récupération du scénario en cours
     const scenario = scenarios[currentScenario];
@@ -175,12 +183,12 @@ function startExperience() {
                                   scenarioStatus[index] === "success"
                                     ? "✓"
                                     : scenarioStatus[index] === "warning"
-                                        ? "!"
-                                        : scenarioStatus[index] === "failed"
-                                            ? "✗"
-                                      : index === scenarios.length
-                                        ? "Q"
-                                        : index + 1
+                                      ? "!"
+                                      : scenarioStatus[index] === "failed"
+                                        ? "✗"
+                                        : index === scenarios.length
+                                          ? "Q"
+                                          : index + 1
                                 }
 
                             </div>
@@ -288,12 +296,12 @@ function startExperience() {
                           scenarioStatus[index] === "success"
                             ? "✓"
                             : scenarioStatus[index] === "warning"
-                                ? "!"
-                                : scenarioStatus[index] === "failed"
-                                    ? "✗"
-                              : index === scenarios.length
-                                ? "Q"
-                                : index + 1
+                              ? "!"
+                              : scenarioStatus[index] === "failed"
+                                ? "✗"
+                                : index === scenarios.length
+                                  ? "Q"
+                                  : index + 1
                         }
 
                     </div>
@@ -375,9 +383,9 @@ function startExperience() {
           continueButton.addEventListener("click", function () {
             // Le scénario est validé
             if (attempts === 0) {
-                scenarioStatus[currentScenario] = "success";
+              scenarioStatus[currentScenario] = "success";
             } else {
-                scenarioStatus[currentScenario] = "warning";
+              scenarioStatus[currentScenario] = "warning";
             }
 
             // Passage au scénario suivant
@@ -402,9 +410,9 @@ function startExperience() {
           // Ajout d'une tentative
           attempts++;
 
-                    if (!scenarioSecondChanceUsed[currentScenario]) {
-                        scenarioSecondChanceUsed[currentScenario] = true;
-                    }
+          if (!scenarioSecondChanceUsed[currentScenario]) {
+            scenarioSecondChanceUsed[currentScenario] = true;
+          }
 
           // Le scénario est temporairement marqué en échec
           scenarioStatus[currentScenario] = "warning";
@@ -433,17 +441,12 @@ function startExperience() {
             <div class="progress-line completed"></div>
 
             ${Array.from({ length: scenarios.length + 1 }, function (_, index) {
-
               return `
 
                     ${
-
                       index > 0
-
                         ? `<div class="progress-line ${index <= currentScenario ? "completed" : ""}"></div>`
-
                         : ""
-
                     }
 
                     <div class="progress-step
@@ -455,23 +458,20 @@ function startExperience() {
                         ${index === currentScenario ? "current" : ""}">
 
                         ${
-
                           scenarioStatus[index] === "success"
                             ? "✓"
-                           : scenarioStatus[index] === "warning"
-                            ? "!"
-                            : scenarioStatus[index] === "failed"
+                            : scenarioStatus[index] === "warning"
+                              ? "!"
+                              : scenarioStatus[index] === "failed"
                                 ? "✗"
-                              : index === scenarios.length
-                                ? "Q"
-                                : index + 1
-
+                                : index === scenarios.length
+                                  ? "Q"
+                                  : index + 1
                         }
 
                     </div>
 
                 `;
-
             }).join("")}
 
         </div>
@@ -597,17 +597,12 @@ function startExperience() {
         <div class="progress-line completed"></div>
 
         ${Array.from({ length: scenarios.length + 1 }, function (_, index) {
-
           return `
 
                 ${
-
                   index > 0
-
                     ? `<div class="progress-line ${index <= currentScenario ? "completed" : ""}"></div>`
-
                     : ""
-
                 }
 
                 <div class="progress-step
@@ -619,7 +614,6 @@ function startExperience() {
                     ${index === currentScenario ? "current" : ""}">
 
                     ${
-
                       scenarioStatus[index] === "success"
                         ? "✓"
                         : scenarioStatus[index] === "warning"
@@ -629,13 +623,11 @@ function startExperience() {
                             : index === scenarios.length
                               ? "Q"
                               : index + 1
-
                     }
 
                 </div>
 
             `;
-
         }).join("")}
 
     </div>
@@ -791,7 +783,7 @@ function startExperience() {
   // ÉCRAN DE FIN DU PARCOURS
   // ========================================
   function showEndScreen() {
-        setCountdownRecapState(false);
+    setCountdownRecapState(false);
 
     // Construction de l'écran affiché lorsque
     // tous les scénarios ont été terminés
@@ -826,480 +818,605 @@ function startExperience() {
     document
       .getElementById("recap-button")
       .addEventListener("click", function () {
+        recapResults = new Array(recapQuizData.length).fill(null);
 
-    recapResults = new Array(recapQuizData.length).fill(null);
-
-    // On démarre le quiz récapitulatif à la question 1
-    displayRecapQuiz(0);
-});
+        // On démarre le quiz récapitulatif à la question 1
+        displayRecapQuiz(0);
+      });
   }
 
-    function getEssentialRules() {
-        return [
-            "Protéger les données personnelles avant toute utilisation dans une IA.",
-            "Vérifier l'identité des demandeurs d'informations sensibles.",
-            "Ne jamais partager de données confidentielles dans une IA publique.",
-            "Toujours vérifier les réponses générées par IA.",
-            "Garder un esprit critique face aux contenus IA (CV, vidéos, messages…)."
-        ];
+  function getEssentialRules() {
+    return [
+      "Protéger les données personnelles avant toute utilisation dans une IA.",
+      "Vérifier l'identité des demandeurs d'informations sensibles.",
+      "Ne jamais partager de données confidentielles dans une IA publique.",
+      "Toujours vérifier les réponses générées par IA.",
+      "Garder un esprit critique face aux contenus IA (CV, vidéos, messages…).",
+    ];
+  }
+
+  function getScenarioSummaryContent(scenarioScore, totalScore) {
+    if (scenarioScore >= 7) {
+      return {
+        color: "#07B29A",
+        message: "Scénarios OK",
+      };
     }
 
-    function getScenarioSummaryContent(scenarioScore, totalScore) {
-        if (scenarioScore >= 7) {
-            return {
-                color: "#07B29A",
-                message: "Scénarios OK"
-            };
-        }
+    if (scenarioScore >= 5) {
+      return {
+        color: "#D38200",
+        message: "Scénarios corrects",
+      };
+    }
 
-        if (scenarioScore >= 5) {
-            return {
-                color: "#D38200",
-                message: "Scénarios corrects"
-            };
-        }
+    return {
+      color: "#DE696B",
+      message: "Scénarios à renforcer",
+    };
+  }
 
+  function getRecapQuizSummaryContent(finalScore) {
+    if (finalScore >= 4) {
+      return {
+        color: "#07B29A",
+        message: "Quiz : OK",
+      };
+    }
+
+    if (finalScore === 3) {
+      return {
+        color: "#D38200",
+        message: "Quiz : Correct",
+      };
+    }
+
+    return {
+      color: "#DE696B",
+      message: "Quiz : À renforcer",
+    };
+  }
+
+  function getElapsedQuizLabel() {
+    if (countdownStartedAt === null) {
+      return "0:00";
+    }
+
+    var elapsedMs = Date.now() - countdownStartedAt;
+
+    if (elapsedMs > COUNTDOWN_DURATION_MS) {
+      return "+ 10mn";
+    }
+
+    var totalSeconds = Math.floor(elapsedMs / 1000);
+    var minutes = Math.floor(totalSeconds / 60);
+    var seconds = totalSeconds % 60;
+
+    return minutes + ":" + String(seconds).padStart(2, "0");
+  }
+
+  function downloadEssentialRulesPdf(
+    finalScore,
+    finalTotal,
+    finalResultContent,
+  ) {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      window.alert(
+        "Le téléchargement PDF n'est pas disponible pour le moment.",
+      );
+      return;
+    }
+
+    var jsPDF = window.jspdf.jsPDF;
+    var pdf = new jsPDF({ unit: "mm", format: "a4" });
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var margin = 18;
+    var cursorY = 22;
+    var contentWidth = pageWidth - margin * 2;
+    var essentialRules = getEssentialRules();
+
+    function addWrappedText(text, fontSize, color, spacingAfter, isBold) {
+      pdf.setFont("helvetica", isBold ? "bold" : "normal");
+      pdf.setFontSize(fontSize);
+      pdf.setTextColor(color[0], color[1], color[2]);
+      var lines = pdf.splitTextToSize(text, contentWidth);
+      if (cursorY + lines.length * (fontSize * 0.42) > pageHeight - margin) {
+        pdf.addPage();
+        cursorY = margin;
+      }
+      pdf.text(lines, margin, cursorY);
+      cursorY += lines.length * (fontSize * 0.42) + spacingAfter;
+    }
+
+    addWrappedText("Chat & Check", 20, [47, 44, 220], 8, true);
+    addWrappedText("Resultat du quiz final", 12, [139, 139, 140], 6, true);
+    addWrappedText(
+      "Score : " + finalScore + "/" + finalTotal,
+      16,
+      [124, 58, 237],
+      4,
+      true,
+    );
+    addWrappedText(finalResultContent.label, 12, [7, 178, 154], 4, true);
+    addWrappedText(finalResultContent.title, 14, [26, 22, 48], 3, true);
+    addWrappedText(
+      finalResultContent.description,
+      11,
+      [114, 114, 122],
+      8,
+      false,
+    );
+    addWrappedText("Les 5 regles essentielles", 14, [139, 139, 140], 6, true);
+
+    essentialRules.forEach(function (rule, index) {
+      addWrappedText(index + 1 + ". " + rule, 11, [26, 22, 48], 4, false);
+    });
+
+    pdf.save("chat-and-check-5-regles.pdf");
+  }
+
+  function getRecapResultContent(finalScore, finalTotal) {
+    if (finalTotal === 5) {
+      if (finalScore === 5) {
         return {
-            color: "#DE696B",
-            message: "Scénarios à renforcer"
+          label: "NIVEAU EXCELLENT",
+          title: "Excellente maîtrise des bons réflexes",
+          description:
+            "Vous appliquez les bonnes pratiques de confidentialité et d'utilisation de l'IA avec rigueur.",
         };
-    }
+      }
 
-    function getRecapQuizSummaryContent(finalScore) {
-        if (finalScore >= 4) {
-            return {
-                color: "#07B29A",
-                message: "Quiz : OK"
-            };
-        }
-
-        if (finalScore === 3) {
-            return {
-                color: "#D38200",
-                message: "Quiz : Correct"
-            };
-        }
-
+      if (finalScore === 4) {
         return {
-            color: "#DE696B",
-            message: "Quiz : À renforcer"
+          label: "NIVEAU BON A RENFORCER",
+          title: "Vous êtes sur la bonne voie",
+          description:
+            "Quelques points à retravailler sur la confidentialité des données.",
         };
+      }
+
+      if (finalScore === 3) {
+        return {
+          label: "NIVEAU MOYEN A RENFORCER",
+          title: "Les bases sont là, mais restent à consolider",
+          description:
+            "Plusieurs réflexes doivent encore être renforcés pour sécuriser l'usage des données avec l'IA.",
+        };
+      }
+
+      if (finalScore === 2) {
+        return {
+          label: "NIVEAU FRAGILE",
+          title: "Une vigilance plus régulière est nécessaire",
+          description:
+            "Des notions importantes sur la confidentialité et les usages sûrs de l'IA restent à revoir.",
+        };
+      }
+
+      if (finalScore === 1) {
+        return {
+          label: "NIVEAU INSUFFISANT",
+          title: "Des repères essentiels sont encore à acquérir",
+          description:
+            "Un renforcement rapide est recommandé pour éviter les erreurs sur les données sensibles.",
+        };
+      }
+
+      return {
+        label: "NIVEAU CRITIQUE",
+        title: "Une remise à niveau est indispensable",
+        description:
+          "Les fondamentaux de confidentialité et de prudence avec l'IA doivent être repris en priorité.",
+      };
     }
 
-    function getElapsedQuizLabel() {
-        if (countdownStartedAt === null) {
-            return "0:00";
-        }
+    var scoreRatio = finalTotal > 0 ? finalScore / finalTotal : 0;
 
-        var elapsedMs = Date.now() - countdownStartedAt;
-
-        if (elapsedMs > COUNTDOWN_DURATION_MS) {
-            return "+ 10mn";
-        }
-
-        var totalSeconds = Math.floor(elapsedMs / 1000);
-        var minutes = Math.floor(totalSeconds / 60);
-        var seconds = totalSeconds % 60;
-
-        return minutes + ":" + String(seconds).padStart(2, "0");
+    if (scoreRatio === 1) {
+      return {
+        label: "NIVEAU EXCELLENT",
+        title: "Excellente maîtrise des bons réflexes",
+        description:
+          "Vous appliquez les bonnes pratiques de confidentialité et d'utilisation de l'IA avec rigueur.",
+      };
     }
 
-    function downloadEssentialRulesPdf(finalScore, finalTotal, finalResultContent) {
-        if (!window.jspdf || !window.jspdf.jsPDF) {
-            window.alert("Le téléchargement PDF n'est pas disponible pour le moment.");
-            return;
+    if (scoreRatio >= 0.8) {
+      return {
+        label: "NIVEAU BON A RENFORCER",
+        title: "Vous êtes sur la bonne voie",
+        description:
+          "Quelques points à retravailler sur la confidentialité des données.",
+      };
+    }
+
+    if (scoreRatio >= 0.6) {
+      return {
+        label: "NIVEAU MOYEN A RENFORCER",
+        title: "Les bases sont là, mais restent à consolider",
+        description:
+          "Plusieurs réflexes doivent encore être renforcés pour sécuriser l'usage des données avec l'IA.",
+      };
+    }
+
+    if (scoreRatio >= 0.4) {
+      return {
+        label: "NIVEAU FRAGILE",
+        title: "Une vigilance plus régulière est nécessaire",
+        description:
+          "Des notions importantes sur la confidentialité et les usages sûrs de l'IA restent à revoir.",
+      };
+    }
+
+    if (scoreRatio > 0) {
+      return {
+        label: "NIVEAU INSUFFISANT",
+        title: "Des repères essentiels sont encore à acquérir",
+        description:
+          "Un renforcement rapide est recommandé pour éviter les erreurs sur les données sensibles.",
+      };
+    }
+
+    return {
+      label: "NIVEAU CRITIQUE",
+      title: "Une remise à niveau est indispensable",
+      description:
+        "Les fondamentaux de confidentialité et de prudence avec l'IA doivent être repris en priorité.",
+    };
+  }
+
+  function displayRecapQuiz(currentIndex) {
+    setCountdownRecapState(true);
+
+    var question = recapQuizData[currentIndex];
+    var isLast = currentIndex === recapQuizData.length - 1;
+    var total = recapQuizData.length;
+
+    var correctCount = recapResults.filter(function (r) {
+      return r === true;
+    }).length;
+    var wrongCount = recapResults.filter(function (r) {
+      return r === false;
+    }).length;
+    var remaining = total - correctCount - wrongCount;
+
+    var miniBarsHTML = "";
+    for (var j = 0; j < total; j++) {
+      var barColor =
+        j < currentIndex
+          ? recapResults[j] === true
+            ? "#07B29A"
+            : "#BC2252"
+          : j === currentIndex
+            ? "#D38200"
+            : "rgba(139,139,140,0.25)";
+      miniBarsHTML +=
+        '<div class="recap-mini-bar" style="background:' +
+        barColor +
+        '"></div>';
+    }
+
+    var answersHTML = question.answers
+      .map(function (answer, index) {
+        return (
+          '<button class="answer-button recap-answer-button" data-index="' +
+          index +
+          '">' +
+          answer +
+          "</button>"
+        );
+      })
+      .join("");
+
+    mainContent.innerHTML =
+      '<div class="scenario-screen recap-screen">' +
+      '<div class="recap-top-bar">' +
+      '<div class="scenario-progress">' +
+      '<div class="progress-step start-step active">✓</div>' +
+      '<div class="progress-line completed"></div>' +
+      Array.from({ length: scenarios.length + 1 }, function (_, index) {
+        return (
+          (index > 0
+            ? '<div class="progress-line ' +
+              (index <= currentScenario ? "completed" : "") +
+              '"></div>'
+            : "") +
+          '<div class="progress-step ' +
+          (scenarioStatus[index] === "success" ? "validated " : "") +
+          (scenarioStatus[index] === "warning" ? "warning " : "") +
+          (scenarioStatus[index] === "failed" ? "failed " : "") +
+          (index === scenarios.length ? "active " : "") +
+          '">' +
+          (scenarioStatus[index] === "success"
+            ? "✓"
+            : scenarioStatus[index] === "warning"
+              ? "!"
+              : scenarioStatus[index] === "failed"
+                ? "✗"
+                : index === scenarios.length
+                  ? '<span style="color:white;">Q</span>'
+                  : index + 1) +
+          "</div>"
+        );
+      }).join("") +
+      "</div>" +
+      '<button class="recap-quiz-final-badge">Quiz final</button>' +
+      "</div>" +
+      '<div class="recap-status-row">' +
+      '<div class="recap-mini-bars">' +
+      miniBarsHTML +
+      "</div>" +
+      '<span class="recap-question-counter">Question ' +
+      (currentIndex + 1) +
+      "/" +
+      total +
+      "</span>" +
+      "</div>" +
+      '<div class="recap-question-row">' +
+      '<p class="recap-question">' +
+      question.question +
+      "</p>" +
+      "</div>" +
+      '<div class="recap-answer-layout">' +
+      '<div id="recap-answers" class="recap-answers">' +
+      answersHTML +
+      "</div>" +
+      '<img src="assets/images/Chip_question.svg" alt="" class="recap-chip" id="recap-chip">' +
+      "</div>" +
+      '<div id="recap-feedback" class="recap-feedback" style="display:none;"></div>' +
+      '<button id="recap-next-button" class="feedback-button recap-next-button" style="display:none;">' +
+      (isLast ? "Terminer" : "Question suivante ->") +
+      "</button>" +
+      "</div>" +
+      '<div class="recap-status-panel">' +
+      '<div class="recap-status-item recap-status-correct">' +
+      '<span class="recap-status-count" id="recap-count-correct">' +
+      correctCount +
+      "</span>" +
+      '<span class="recap-status-label">Correctes</span>' +
+      "</div>" +
+      '<div class="recap-status-divider"></div>' +
+      '<div class="recap-status-item recap-status-error">' +
+      '<span class="recap-status-count" id="recap-count-wrong">' +
+      wrongCount +
+      "</span>" +
+      '<span class="recap-status-label">Erreurs</span>' +
+      "</div>" +
+      '<div class="recap-status-divider"></div>' +
+      '<div class="recap-status-item recap-status-remaining">' +
+      '<span class="recap-status-count" id="recap-count-remaining">' +
+      remaining +
+      "</span>" +
+      '<span class="recap-status-label">Restantes</span>' +
+      "</div>" +
+      "</div>";
+
+    var answerButtons = document.querySelectorAll(".recap-answer-button");
+
+    answerButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        var selectedIndex = parseInt(button.dataset.index);
+        var isCorrect = selectedIndex === question.correctAnswer;
+        recapResults[currentIndex] = isCorrect;
+
+        if (isLast) {
+          freezeCountdown();
         }
 
-        var jsPDF = window.jspdf.jsPDF;
-        var pdf = new jsPDF({ unit: "mm", format: "a4" });
-        var pageWidth = pdf.internal.pageSize.getWidth();
-        var pageHeight = pdf.internal.pageSize.getHeight();
-        var margin = 18;
-        var cursorY = 22;
-        var contentWidth = pageWidth - margin * 2;
-        var essentialRules = getEssentialRules();
-
-        function addWrappedText(text, fontSize, color, spacingAfter, isBold) {
-            pdf.setFont("helvetica", isBold ? "bold" : "normal");
-            pdf.setFontSize(fontSize);
-            pdf.setTextColor(color[0], color[1], color[2]);
-            var lines = pdf.splitTextToSize(text, contentWidth);
-            if (cursorY + lines.length * (fontSize * 0.42) > pageHeight - margin) {
-                pdf.addPage();
-                cursorY = margin;
-            }
-            pdf.text(lines, margin, cursorY);
-            cursorY += lines.length * (fontSize * 0.42) + spacingAfter;
-        }
-
-        addWrappedText("Chat & Check", 20, [47, 44, 220], 8, true);
-        addWrappedText("Resultat du quiz final", 12, [139, 139, 140], 6, true);
-        addWrappedText("Score : " + finalScore + "/" + finalTotal, 16, [124, 58, 237], 4, true);
-        addWrappedText(finalResultContent.label, 12, [7, 178, 154], 4, true);
-        addWrappedText(finalResultContent.title, 14, [26, 22, 48], 3, true);
-        addWrappedText(finalResultContent.description, 11, [114, 114, 122], 8, false);
-        addWrappedText("Les 5 regles essentielles", 14, [139, 139, 140], 6, true);
-
-        essentialRules.forEach(function(rule, index) {
-            addWrappedText((index + 1) + ". " + rule, 11, [26, 22, 48], 4, false);
+        answerButtons.forEach(function (btn) {
+          btn.disabled = true;
         });
-
-        pdf.save("chat-and-check-5-regles.pdf");
-    }
-
-    function getRecapResultContent(finalScore, finalTotal) {
-        if (finalTotal === 5) {
-            if (finalScore === 5) {
-                return {
-                    label: "NIVEAU EXCELLENT",
-                    title: "Excellente maîtrise des bons réflexes",
-                    description: "Vous appliquez les bonnes pratiques de confidentialité et d'utilisation de l'IA avec rigueur."
-                };
-            }
-
-            if (finalScore === 4) {
-                return {
-                    label: "NIVEAU BON A RENFORCER",
-                    title: "Vous êtes sur la bonne voie",
-                    description: "Quelques points à retravailler sur la confidentialité des données."
-                };
-            }
-
-            if (finalScore === 3) {
-                return {
-                    label: "NIVEAU MOYEN A RENFORCER",
-                    title: "Les bases sont là, mais restent à consolider",
-                    description: "Plusieurs réflexes doivent encore être renforcés pour sécuriser l'usage des données avec l'IA."
-                };
-            }
-
-            if (finalScore === 2) {
-                return {
-                    label: "NIVEAU FRAGILE",
-                    title: "Une vigilance plus régulière est nécessaire",
-                    description: "Des notions importantes sur la confidentialité et les usages sûrs de l'IA restent à revoir."
-                };
-            }
-
-            if (finalScore === 1) {
-                return {
-                    label: "NIVEAU INSUFFISANT",
-                    title: "Des repères essentiels sont encore à acquérir",
-                    description: "Un renforcement rapide est recommandé pour éviter les erreurs sur les données sensibles."
-                };
-            }
-
-            return {
-                label: "NIVEAU CRITIQUE",
-                title: "Une remise à niveau est indispensable",
-                description: "Les fondamentaux de confidentialité et de prudence avec l'IA doivent être repris en priorité."
-            };
+        button.classList.add(isCorrect ? "recap-correct" : "recap-incorrect");
+        if (!isCorrect) {
+          answerButtons[question.correctAnswer].classList.add("recap-correct");
         }
-
-        var scoreRatio = finalTotal > 0 ? finalScore / finalTotal : 0;
-
-        if (scoreRatio === 1) {
-            return {
-                label: "NIVEAU EXCELLENT",
-                title: "Excellente maîtrise des bons réflexes",
-                description: "Vous appliquez les bonnes pratiques de confidentialité et d'utilisation de l'IA avec rigueur."
-            };
+        var chip = document.getElementById("recap-chip");
+        if (chip) chip.style.display = "none";
+        var allBars = document.querySelectorAll(".recap-mini-bar");
+        if (allBars[currentIndex]) {
+          allBars[currentIndex].style.background = isCorrect
+            ? "#07B29A"
+            : "#BC2252";
         }
-
-        if (scoreRatio >= 0.8) {
-            return {
-                label: "NIVEAU BON A RENFORCER",
-                title: "Vous êtes sur la bonne voie",
-                description: "Quelques points à retravailler sur la confidentialité des données."
-            };
+        var allProgressSteps = document.querySelectorAll(
+          ".recap-progress-step",
+        );
+        if (allProgressSteps[currentIndex]) {
+          allProgressSteps[currentIndex].classList.remove(
+            "recap-progress-step-current",
+          );
+          allProgressSteps[currentIndex].classList.add(
+            isCorrect
+              ? "recap-progress-step-correct"
+              : "recap-progress-step-wrong",
+          );
+          allProgressSteps[currentIndex].textContent = isCorrect ? "✓" : "✕";
         }
+        var cNow = recapResults.filter(function (r) {
+          return r === true;
+        }).length;
+        var wNow = recapResults.filter(function (r) {
+          return r === false;
+        }).length;
+        var rNow = total - cNow - wNow;
+        var elC = document.getElementById("recap-count-correct");
+        var elW = document.getElementById("recap-count-wrong");
+        var elR = document.getElementById("recap-count-remaining");
+        if (elC) elC.textContent = cNow;
+        if (elW) elW.textContent = wNow;
+        if (elR) elR.textContent = rNow;
+        var feedback = document.getElementById("recap-feedback");
+        feedback.innerHTML =
+          '<p class="recap-feedback-label ' +
+          (isCorrect
+            ? "recap-feedback-correct-label"
+            : "recap-feedback-incorrect-label") +
+          '">' +
+          (isCorrect ? "✓ Bonne réponse" : "✗ Mauvaise réponse") +
+          "</p><p>" +
+          question.explanation +
+          "</p>";
+        feedback.style.display = "block";
+        document.getElementById("recap-next-button").style.display = "block";
+      });
+    });
 
-        if (scoreRatio >= 0.6) {
-            return {
-                label: "NIVEAU MOYEN A RENFORCER",
-                title: "Les bases sont là, mais restent à consolider",
-                description: "Plusieurs réflexes doivent encore être renforcés pour sécuriser l'usage des données avec l'IA."
-            };
-        }
+    document
+      .getElementById("recap-next-button")
+      .addEventListener("click", function () {
+        if (!isLast) {
+          displayRecapQuiz(currentIndex + 1);
+        } else {
+          var finalScore = recapResults.filter(function (r) {
+            return r === true;
+          }).length;
+          var finalTotal = recapQuizData.length;
+          var finalResultContent = getRecapResultContent(
+            finalScore,
+            finalTotal,
+          );
+          var scenarioScore = score;
+          var scenarioTotalScore = scenarios.length * 2;
+          var usedSecondChanceCount = scenarioSecondChanceUsed.filter(
+            function (usedSecondChance) {
+              return usedSecondChance;
+            },
+          ).length;
+          var scenarioSummaryContent = getScenarioSummaryContent(
+            scenarioScore,
+            scenarioTotalScore,
+          );
+          var quizSummaryContent = getRecapQuizSummaryContent(finalScore);
+          var elapsedQuizLabel = getElapsedQuizLabel();
+          var restartIconPath = "assets/images/arrow.png";
+          var downloadIconPath = "assets/images/upload.png";
+          var essentialRulesHTML = getEssentialRules()
+            .map(function (rule, index) {
+              return (
+                '<li class="quiz-finished-rule-item">' +
+                '<span class="quiz-finished-rule-number">' +
+                (index + 1) +
+                "</span>" +
+                '<span class="quiz-finished-rule-text">' +
+                rule +
+                "</span>" +
+                "</li>"
+              );
+            })
+            .join("");
 
-        if (scoreRatio >= 0.4) {
-            return {
-                label: "NIVEAU FRAGILE",
-                title: "Une vigilance plus régulière est nécessaire",
-                description: "Des notions importantes sur la confidentialité et les usages sûrs de l'IA restent à revoir."
-            };
-        }
+          mainContent.innerHTML =
+            '<div class="scenario-screen quiz-finished-screen">' +
+            '<div class="quiz-finished-header">' +
+            '<div class="quiz-finished-summary">' +
+            '<div class="quiz-finished-score-ring" aria-label="Score final">' +
+            '<span class="quiz-finished-score-value">' +
+            finalScore +
+            "</span>" +
+            '<span class="quiz-finished-score-total">/' +
+            finalTotal +
+            "</span>" +
+            "</div>" +
+            '<div class="quiz-finished-copy">' +
+            '<p class="quiz-finished-kicker">' +
+            finalResultContent.label +
+            "</p>" +
+            '<p class="quiz-finished-title">' +
+            finalResultContent.title +
+            "</p>" +
+            '<p class="quiz-finished-description">' +
+            finalResultContent.description +
+            "</p>" +
+            "</div>" +
+            "</div>" +
+            '<button id="close-kit-button" class="quiz-finished-close-button">Fermer le kit</button>' +
+            "</div>" +
+            '<div class="quiz-finished-stats" aria-label="Résumé des performances">' +
+            '<div class="quiz-finished-stat">' +
+            '<span class="quiz-finished-stat-value" style="color: ' +
+            scenarioSummaryContent.color +
+            ';">' +
+            scenarioScore +
+            "/" +
+            scenarioTotalScore +
+            "</span>" +
+            '<span class="quiz-finished-stat-label">' +
+            scenarioSummaryContent.message +
+            "</span>" +
+            "</div>" +
+            '<div class="quiz-finished-stat">' +
+            '<span class="quiz-finished-stat-value" style="color: ' +
+            quizSummaryContent.color +
+            ';">' +
+            finalScore +
+            "/" +
+            finalTotal +
+            "</span>" +
+            '<span class="quiz-finished-stat-label">' +
+            quizSummaryContent.message +
+            "</span>" +
+            "</div>" +
+            '<div class="quiz-finished-stat">' +
+            '<span class="quiz-finished-stat-value quiz-finished-stat-value-time">' +
+            elapsedQuizLabel +
+            "</span>" +
+            '<span class="quiz-finished-stat-label">Temps total</span>' +
+            "</div>" +
+            '<div class="quiz-finished-stat">' +
+            '<span class="quiz-finished-stat-value" style="color: #D38200;">' +
+            usedSecondChanceCount +
+            "</span>" +
+            '<span class="quiz-finished-stat-label quiz-finished-stat-label-white">2e chance utilisée</span>' +
+            "</div>" +
+            "</div>" +
+            '<div class="quiz-finished-takeaways">' +
+            '<h2 class="quiz-finished-rules-title">LES 5 REGLES ESSENTIELLES</h2>' +
+            '<ol class="quiz-finished-rules-list">' +
+            essentialRulesHTML +
+            "</ol>" +
+            "</div>" +
+            '<div class="quiz-finished-actions">' +
+            '<button id="restart-path-button" class="quiz-finished-action-button quiz-finished-action-button-primary">' +
+            "<span>Recommencer le parcours</span>" +
+            '<img src="' +
+            restartIconPath +
+            '" alt="" class="quiz-finished-action-icon">' +
+            "</button>" +
+            '<button id="download-rules-button" class="quiz-finished-action-button quiz-finished-action-button-secondary">' +
+            "<span>Télécharger les 5 règles</span>" +
+            '<img src="' +
+            downloadIconPath +
+            '" alt="" class="quiz-finished-action-icon">' +
+            "</button>" +
+            "</div>" +
+            "</div>";
 
-        if (scoreRatio > 0) {
-            return {
-                label: "NIVEAU INSUFFISANT",
-                title: "Des repères essentiels sont encore à acquérir",
-                description: "Un renforcement rapide est recommandé pour éviter les erreurs sur les données sensibles."
-            };
-        }
+          setCountdownRecapState(false);
 
-        return {
-            label: "NIVEAU CRITIQUE",
-            title: "Une remise à niveau est indispensable",
-            description: "Les fondamentaux de confidentialité et de prudence avec l'IA doivent être repris en priorité."
-        };
-    }
-
-
-    //         recapResults = new Array(recapQuizData.length).fill(null);
-    //         displayRecapQuiz(0);
-
-
-    // // Vérifie si l'on se trouve sur la dernière question
-    // const isLast = currentIndex === recapQuizData.length - 1;
-
-
-    // }
-
-    function displayRecapQuiz(currentIndex) {
-
-        setCountdownRecapState(true);
-
-        var question = recapQuizData[currentIndex];
-        var isLast = currentIndex === recapQuizData.length - 1;
-        var total = recapQuizData.length;
-
-        var correctCount = recapResults.filter(function(r) { return r === true; }).length;
-        var wrongCount = recapResults.filter(function(r) { return r === false; }).length;
-        var remaining = total - correctCount - wrongCount;
-
-        // var progressStepsHTML = '';
-        // for (var i = 0; i < total; i++) {
-        //     if (i > 0) progressStepsHTML += '<div class="recap-progress-line"></div>';
-        //     if (recapResults[i] === true) {
-        //         progressStepsHTML += '<div class="recap-progress-step recap-progress-step-correct">✓</div>';
-        //     } else if (recapResults[i] === false) {
-        //         progressStepsHTML += '<div class="recap-progress-step recap-progress-step-wrong">✕</div>';
-        //     } else if (i === currentIndex) {
-        //         progressStepsHTML += '<div class="recap-progress-step recap-progress-step-current">' + (i + 1) + '</div>';
-        //     } else {
-        //         progressStepsHTML += '<div class="recap-progress-step">' + (i + 1) + '</div>';
-        //     }
-        // }
-
-
-        var miniBarsHTML = '';
-        for (var j = 0; j < total; j++) {
-            var barColor = j < currentIndex
-                ? (recapResults[j] === true ? '#07B29A' : '#BC2252')
-                : j === currentIndex ? '#D38200' : 'rgba(139,139,140,0.25)';
-            miniBarsHTML += '<div class="recap-mini-bar" style="background:' + barColor + '"></div>';
-        }
-
-        var answersHTML = question.answers.map(function(answer, index) {
-            return '<button class="answer-button recap-answer-button" data-index="' + index + '">' + answer + '</button>';
-        }).join('');
-
-        mainContent.innerHTML =
-            '<div class="scenario-screen recap-screen">' +
-                '<div class="recap-top-bar">' +
-                    '<div class="scenario-progress">' +
-                        '<div class="progress-step start-step active">✓</div>' +
-                        '<div class="progress-line completed"></div>' +
-                        Array.from({ length: scenarios.length + 1 }, function (_, index) {
-                            return (
-                                (index > 0
-                                    ? '<div class="progress-line ' + (index <= currentScenario ? 'completed' : '') + '"></div>'
-                                    : '') +
-                                '<div class="progress-step ' +
-                                    (scenarioStatus[index] === 'success' ? 'validated ' : '') +
-                                    (scenarioStatus[index] === 'warning' ? 'warning ' : '') +
-                                    (scenarioStatus[index] === 'failed' ? 'failed ' : '') +
-                                    (index === scenarios.length ? 'active ' : '') +
-                                    '">' +
-                                    (scenarioStatus[index] === 'success'
-                                        ? '✓'
-                                        : scenarioStatus[index] === 'warning'
-                                            ? '!'
-                                            : scenarioStatus[index] === 'failed'
-                                                ? '✗'
-                                                : index === scenarios.length
-                                                    ? '<span style="color:white;">Q</span>'
-                                                    : index + 1) +
-                                '</div>'
-                            );
-                        }).join('') +
-                    '</div>' +
-                    '<button class="recap-quiz-final-badge">Quiz final</button>' +
-                '</div>' +
-                '<div class="recap-status-row">' +
-                    '<div class="recap-mini-bars">' + miniBarsHTML + '</div>' +
-                    '<span class="recap-question-counter">Question ' + (currentIndex + 1) + '/' + total + '</span>' +
-                '</div>' +
-                '<div class="recap-question-row">' +
-                    '<p class="recap-question">' + question.question + '</p>' +
-                '</div>' +
-                '<div class="recap-answer-layout">' +
-                    '<div id="recap-answers" class="recap-answers">' + answersHTML + '</div>' +
-                    '<img src="assets/images/Chip_question.svg" alt="" class="recap-chip" id="recap-chip">' +
-                '</div>' +
-                '<div id="recap-feedback" class="recap-feedback" style="display:none;"></div>' +
-                '<button id="recap-next-button" class="feedback-button recap-next-button" style="display:none;">' +
-                    (isLast ? 'Terminer' : 'Question suivante ->') +
-                '</button>' +
-            '</div>' +
-            '<div class="recap-status-panel">' +
-                '<div class="recap-status-item recap-status-correct">' +
-                    '<span class="recap-status-count" id="recap-count-correct">' + correctCount + '</span>' +
-                    '<span class="recap-status-label">Correctes</span>' +
-                '</div>' +
-                '<div class="recap-status-divider"></div>' +
-                '<div class="recap-status-item recap-status-error">' +
-                    '<span class="recap-status-count" id="recap-count-wrong">' + wrongCount + '</span>' +
-                    '<span class="recap-status-label">Erreurs</span>' +
-                '</div>' +
-                '<div class="recap-status-divider"></div>' +
-                '<div class="recap-status-item recap-status-remaining">' +
-                    '<span class="recap-status-count" id="recap-count-remaining">' + remaining + '</span>' +
-                    '<span class="recap-status-label">Restantes</span>' +
-                '</div>' +
-            '</div>';
-
-
-        var answerButtons = document.querySelectorAll('.recap-answer-button');
-
-        answerButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var selectedIndex = parseInt(button.dataset.index);
-                var isCorrect = selectedIndex === question.correctAnswer;
-                recapResults[currentIndex] = isCorrect;
-
-                if (isLast) {
-                    freezeCountdown();
-                }
-
-                answerButtons.forEach(function(btn) { btn.disabled = true; });
-                button.classList.add(isCorrect ? 'recap-correct' : 'recap-incorrect');
-                if (!isCorrect) {
-                    answerButtons[question.correctAnswer].classList.add('recap-correct');
-                }
-                var chip = document.getElementById('recap-chip');
-                if (chip) chip.style.display = 'none';
-                var allBars = document.querySelectorAll('.recap-mini-bar');
-                if (allBars[currentIndex]) {
-                    allBars[currentIndex].style.background = isCorrect ? '#07B29A' : '#BC2252';
-                }
-                var allProgressSteps = document.querySelectorAll('.recap-progress-step');
-                if (allProgressSteps[currentIndex]) {
-                    allProgressSteps[currentIndex].classList.remove('recap-progress-step-current');
-                    allProgressSteps[currentIndex].classList.add(isCorrect ? 'recap-progress-step-correct' : 'recap-progress-step-wrong');
-                    allProgressSteps[currentIndex].textContent = isCorrect ? '✓' : '✕';
-                }
-                var cNow = recapResults.filter(function(r) { return r === true; }).length;
-                var wNow = recapResults.filter(function(r) { return r === false; }).length;
-                var rNow = total - cNow - wNow;
-                var elC = document.getElementById('recap-count-correct');
-                var elW = document.getElementById('recap-count-wrong');
-                var elR = document.getElementById('recap-count-remaining');
-                if (elC) elC.textContent = cNow;
-                if (elW) elW.textContent = wNow;
-                if (elR) elR.textContent = rNow;
-                var feedback = document.getElementById('recap-feedback');
-                feedback.innerHTML =
-                    '<p class="recap-feedback-label ' + (isCorrect ? 'recap-feedback-correct-label' : 'recap-feedback-incorrect-label') + '">' +
-                    (isCorrect ? '✓ Bonne réponse' : '✗ Mauvaise réponse') +
-                    '</p><p>' + question.explanation + '</p>';
-                feedback.style.display = 'block';
-                document.getElementById('recap-next-button').style.display = 'block';
+          document
+            .getElementById("close-kit-button")
+            .addEventListener("click", function () {
+              window.location.reload();
             });
-        });
 
-        document.getElementById('recap-next-button').addEventListener('click', function() {
-            if (!isLast) {
-                displayRecapQuiz(currentIndex + 1);
-            } else {
-                var finalScore = recapResults.filter(function(r) { return r === true; }).length;
-                var finalTotal = recapQuizData.length;
-                var finalResultContent = getRecapResultContent(finalScore, finalTotal);
-                var scenarioScore = score;
-                var scenarioTotalScore = scenarios.length * 2;
-                var usedSecondChanceCount = scenarioSecondChanceUsed.filter(function(usedSecondChance) {
-                    return usedSecondChance;
-                }).length;
-                var scenarioSummaryContent = getScenarioSummaryContent(scenarioScore, scenarioTotalScore);
-                var quizSummaryContent = getRecapQuizSummaryContent(finalScore);
-                var elapsedQuizLabel = getElapsedQuizLabel();
-                var restartIconPath = 'assets/images/arrow.png';
-                var downloadIconPath = 'assets/images/upload.png';
-                var essentialRulesHTML = getEssentialRules().map(function(rule, index) {
-                    return '<li class="quiz-finished-rule-item">' +
-                        '<span class="quiz-finished-rule-number">' + (index + 1) + '</span>' +
-                        '<span class="quiz-finished-rule-text">' + rule + '</span>' +
-                    '</li>';
-                }).join('');
+          document
+            .getElementById("restart-path-button")
+            .addEventListener("click", function () {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              startExperience();
+            });
 
-                mainContent.innerHTML =
-                    '<div class="scenario-screen quiz-finished-screen">' +
-                        '<div class="quiz-finished-header">' +
-                            '<div class="quiz-finished-summary">' +
-                                '<div class="quiz-finished-score-ring" aria-label="Score final">' +
-                                    '<span class="quiz-finished-score-value">' + finalScore + '</span>' +
-                                    '<span class="quiz-finished-score-total">/' + finalTotal + '</span>' +
-                                '</div>' +
-                                '<div class="quiz-finished-copy">' +
-                                    '<p class="quiz-finished-kicker">' + finalResultContent.label + '</p>' +
-                                    '<p class="quiz-finished-title">' + finalResultContent.title + '</p>' +
-                                    '<p class="quiz-finished-description">' + finalResultContent.description + '</p>' +
-                                '</div>' +
-                            '</div>' +
-                            '<button id="close-kit-button" class="quiz-finished-close-button">Fermer le kit</button>' +
-                        '</div>' +
-                        '<div class="quiz-finished-stats" aria-label="Résumé des performances">' +
-                            '<div class="quiz-finished-stat">' +
-                                '<span class="quiz-finished-stat-value" style="color: ' + scenarioSummaryContent.color + ';">' + scenarioScore + '/' + scenarioTotalScore + '</span>' +
-                                '<span class="quiz-finished-stat-label">' + scenarioSummaryContent.message + '</span>' +
-                            '</div>' +
-                            '<div class="quiz-finished-stat">' +
-                                '<span class="quiz-finished-stat-value" style="color: ' + quizSummaryContent.color + ';">' + finalScore + '/' + finalTotal + '</span>' +
-                                '<span class="quiz-finished-stat-label">' + quizSummaryContent.message + '</span>' +
-                            '</div>' +
-                            '<div class="quiz-finished-stat">' +
-                                '<span class="quiz-finished-stat-value quiz-finished-stat-value-time">' + elapsedQuizLabel + '</span>' +
-                                '<span class="quiz-finished-stat-label">Temps total</span>' +
-                            '</div>' +
-                            '<div class="quiz-finished-stat">' +
-                                '<span class="quiz-finished-stat-value" style="color: #D38200;">' + usedSecondChanceCount + '</span>' +
-                                '<span class="quiz-finished-stat-label quiz-finished-stat-label-white">2e chance utilisée</span>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="quiz-finished-takeaways">' +
-                            '<h2 class="quiz-finished-rules-title">LES 5 REGLES ESSENTIELLES</h2>' +
-                            '<ol class="quiz-finished-rules-list">' + essentialRulesHTML + '</ol>' +
-                            
-                        '</div>' +
-                        '<div class="quiz-finished-actions">' +
-                                '<button id="restart-path-button" class="quiz-finished-action-button quiz-finished-action-button-primary">' +
-                                    '<span>Recommencer le parcours</span>' +
-                                    '<img src="' + restartIconPath + '" alt="" class="quiz-finished-action-icon">' +
-                                '</button>' +
-                                '<button id="download-rules-button" class="quiz-finished-action-button quiz-finished-action-button-secondary">' +
-                                    '<span>Télécharger les 5 règles</span>' +
-                                    '<img src="' + downloadIconPath + '" alt="" class="quiz-finished-action-icon">' +
-                                '</button>' +
-                            '</div>' +
-                    '</div>';
-
-                setCountdownRecapState(false);
-
-                document.getElementById('close-kit-button').addEventListener('click', function() {
-                    window.location.reload();
-                });
-
-                document.getElementById('restart-path-button').addEventListener('click', function() {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    startExperience();
-                });
-
-                document.getElementById('download-rules-button').addEventListener('click', function() {
-                    downloadEssentialRulesPdf(finalScore, finalTotal, finalResultContent);
-                });
-            }
-        });
-
-    }
+          document
+            .getElementById("download-rules-button")
+            .addEventListener("click", function () {
+              downloadEssentialRulesPdf(
+                finalScore,
+                finalTotal,
+                finalResultContent,
+              );
+            });
+        }
+      });
+  }
 }
