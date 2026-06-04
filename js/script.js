@@ -1179,7 +1179,7 @@ function startExperience() {
                     answerButtons[question.correctAnswer].classList.add('recap-correct');
                 }
                 var chip = document.getElementById('recap-chip');
-                if (chip) chip.style.display = 'none';
+                if (chip) chip.src = isCorrect ? 'assets/images/Chip_correct.svg' : 'assets/images/Chip_incorrect.svg';
                 var allBars = document.querySelectorAll('.recap-mini-bar');
                 if (allBars[currentIndex]) {
                     allBars[currentIndex].style.background = isCorrect ? '#07B29A' : '#BC2252';
@@ -1269,8 +1269,10 @@ function startExperience() {
                         '</div>' +
                         '<div class="quiz-finished-takeaways">' +
                             '<h2 class="quiz-finished-rules-title">LES 5 REGLES ESSENTIELLES</h2>' +
-                            '<ol class="quiz-finished-rules-list">' + essentialRulesHTML + '</ol>' +
-                            
+                            '<div class="quiz-finished-rules">' +
+                                '<ol class="quiz-finished-rules-list">' + essentialRulesHTML + '</ol>' +
+                                '<img src="assets/images/Chip_basic.svg" alt="" class="recap-chip" id="recap-chip">' +
+                            '</div>' +
                         '</div>' +
                         '<div class="quiz-finished-actions">' +
                                 '<button id="restart-path-button" class="quiz-finished-action-button quiz-finished-action-button-primary">' +
@@ -1285,6 +1287,7 @@ function startExperience() {
                     '</div>';
 
                 setCountdownRecapState(false);
+                ensureCountdownElement().classList.add('countdown-timer-hidden');
 
                 document.getElementById('close-kit-button').addEventListener('click', function() {
                     window.location.reload();
