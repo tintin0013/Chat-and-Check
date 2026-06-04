@@ -261,11 +261,11 @@ function startExperience() {
                 </div>
 
                 <div class="takeaway-item">
-                    ✓ ${scenario.takeaways[0]}
+                    ✅ ${scenario.takeaways[0]}
                 </div>
 
                 <div class="takeaway-item">
-                    ✓ ${scenario.takeaways[1]}
+                    ✅ ${scenario.takeaways[1]}
                 </div>
 
             </div>
@@ -451,13 +451,13 @@ function startExperience() {
 
             <div class="takeaway-item">
 
-                ✗ ${scenario.wrongTakeaways[0]}
+                ❌ ${scenario.wrongTakeaways[0]}
 
             </div>
 
             <div class="takeaway-item">
 
-                ✗ ${scenario.wrongTakeaways[1]}
+                ❌ ${scenario.wrongTakeaways[1]}
 
             </div>
 
@@ -624,13 +624,13 @@ function startExperience() {
 
         <div class="takeaway-item">
 
-            ✓ ${scenario.takeaways[0]}
+            ✅ ${scenario.takeaways[0]}
 
         </div>
 
         <div class="takeaway-item">
 
-            ✓ ${scenario.takeaways[1]}
+            ✅ ${scenario.takeaways[1]}
 
         </div>
 
