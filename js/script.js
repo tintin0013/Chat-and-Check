@@ -911,19 +911,19 @@ function startExperience() {
         var wrongCount = recapResults.filter(function(r) { return r === false; }).length;
         var remaining = total - correctCount - wrongCount;
 
-        var progressStepsHTML = '';
-        for (var i = 0; i < total; i++) {
-            if (i > 0) progressStepsHTML += '<div class="recap-progress-line"></div>';
-            if (recapResults[i] === true) {
-                progressStepsHTML += '<div class="recap-progress-step recap-progress-step-correct">✓</div>';
-            } else if (recapResults[i] === false) {
-                progressStepsHTML += '<div class="recap-progress-step recap-progress-step-wrong">✕</div>';
-            } else if (i === currentIndex) {
-                progressStepsHTML += '<div class="recap-progress-step recap-progress-step-current">' + (i + 1) + '</div>';
-            } else {
-                progressStepsHTML += '<div class="recap-progress-step">' + (i + 1) + '</div>';
-            }
-        }
+        // var progressStepsHTML = '';
+        // for (var i = 0; i < total; i++) {
+        //     if (i > 0) progressStepsHTML += '<div class="recap-progress-line"></div>';
+        //     if (recapResults[i] === true) {
+        //         progressStepsHTML += '<div class="recap-progress-step recap-progress-step-correct">✓</div>';
+        //     } else if (recapResults[i] === false) {
+        //         progressStepsHTML += '<div class="recap-progress-step recap-progress-step-wrong">✕</div>';
+        //     } else if (i === currentIndex) {
+        //         progressStepsHTML += '<div class="recap-progress-step recap-progress-step-current">' + (i + 1) + '</div>';
+        //     } else {
+        //         progressStepsHTML += '<div class="recap-progress-step">' + (i + 1) + '</div>';
+        //     }
+        // }
 
 
         var miniBarsHTML = '';
@@ -941,7 +941,33 @@ function startExperience() {
         mainContent.innerHTML =
             '<div class="scenario-screen recap-screen">' +
                 '<div class="recap-top-bar">' +
-                    '<div class="recap-progress">' + progressStepsHTML + '</div>' +
+                    '<div class="scenario-progress">' +
+                        '<div class="progress-step start-step active">✓</div>' +
+                        '<div class="progress-line completed"></div>' +
+                        Array.from({ length: scenarios.length + 1 }, function (_, index) {
+                            return (
+                                (index > 0
+                                    ? '<div class="progress-line ' + (index <= currentScenario ? 'completed' : '') + '"></div>'
+                                    : '') +
+                                '<div class="progress-step ' +
+                                    (scenarioStatus[index] === 'success' ? 'validated ' : '') +
+                                    (scenarioStatus[index] === 'warning' ? 'warning ' : '') +
+                                    (scenarioStatus[index] === 'failed' ? 'failed ' : '') +
+                                    (index === scenarios.length ? 'active ' : '') +
+                                    '">' +
+                                    (scenarioStatus[index] === 'success'
+                                        ? '✓'
+                                        : scenarioStatus[index] === 'warning'
+                                            ? '!'
+                                            : scenarioStatus[index] === 'failed'
+                                                ? '✗'
+                                                : index === scenarios.length
+                                                    ? '<span style="color:white;">Q</span>'
+                                                    : index + 1) +
+                                '</div>'
+                            );
+                        }).join('') +
+                    '</div>' +
                     '<button class="recap-quiz-final-badge">Quiz final</button>' +
                 '</div>' +
                 '<div class="recap-status-row">' +
